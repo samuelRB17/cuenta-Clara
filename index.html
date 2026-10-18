@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- ============ 1) PEGA AQUÍ EL SCRIPT DE GOOGLE TAG MANAGER (lo más alto del <head>) ============ -->
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" id="theme-color" content="#EAF3F1">
+  <!-- Define el tema antes de pintar para evitar el “flash” blanco -->
+  <script>
+    (function(){
+      try{
+        var saved = localStorage.getItem('cc-theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = saved ? saved : (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      }catch(e){
+        document.documentElement.setAttribute('data-theme','light');
+      }
+    })();
+  </script>
+  <title>Cuenta Clara — Divide los gastos del apartamento sin discutir</title>
+  <meta name="description" content="Cuenta Clara es la app que reparte los gastos compartidos entre compañeros de casa y te recuerda quién debe qué. Únete a la lista de espera.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --ink:#14213D;        /* texto y fondos oscuros */
+      --mist:#EAF3F1;       /* fondo base */
+      --teal:#0F6B63;       /* acción principal */
+      --teal-dark:#0A4A45;
+      --sun:#F5B83D;        /* acento */
+      --white:#FFFFFF;
+      --line:#C9DAD6;
+      --radius:14px;
+      --max:1120px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--mist);color:var(--ink);line-height:1.6;font-size:1.0625rem}
+    h1,h2,h3{font-family:'Bricolage Grotesque','DM Sans',sans-serif;line-height:1.1;letter-spacing:-.02em}
+    h1{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800}
+    h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:1rem}
+    h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem}
+    p{max-width:62ch}
+    a{color:inherit}
+    :focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+    .wrap{max-width:var(--max);margin:0 auto;padding:0 1.25rem}
+    section{padding:5rem 0}
+
+    /* Botones */
+    .btn{display:inline-block;font:700 1rem 'DM Sans',sans-serif;padding:.95rem 1.7rem;border-radius:999px;border:0;cursor:pointer;text-decoration:none;transition:transform .15s,background .15s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:var(--teal);color:var(--white)}
+    .btn-primary:hover{background:var(--teal-dark)}
+    .btn-sun{background:var(--sun);color:var(--ink)}
+    .btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+
+    /* 1. Header – NAVBAR ISLA FLOTANTE: píldora despegada con glassmorphism */
+    header{position:sticky;top:0;z-index:50;background:transparent;border:0;padding:.9rem 1rem 0;pointer-events:none;transition:padding .5s cubic-bezier(.22,1,.36,1)}
+    header.scrolled{padding:.5rem 1rem 0}
+
+    /* La isla */
+    .nav{pointer-events:auto;position:relative;height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0 .5rem 0 1.15rem;border-radius:999px;background:rgba(234,243,241,.72);backdrop-filter:blur(18px) saturate(1.6);-webkit-backdrop-filter:blur(18px) saturate(1.6);border:1px solid rgba(201,218,214,.85);box-shadow:0 16px 48px -22px rgba(20,33,61,.45),0 6px 20px -10px rgba(20,33,61,.18),inset 0 1px 0 rgba(255,255,255,.6);transition:height .5s cubic-bezier(.22,1,.36,1),background .5s ease,box-shadow .5s ease,border-color .5s ease;will-change:height,background,box-shadow}
+    header.scrolled .nav{height:62px;background:rgba(234,243,241,.9);border-color:rgba(201,218,214,.95);box-shadow:0 22px 56px -24px rgba(20,33,61,.55),0 8px 24px -12px rgba(20,33,61,.22),inset 0 1px 0 rgba(255,255,255,.7)}
+    header.compact .nav{height:56px;background:rgba(234,243,241,.96)}
+
+    /* Progreso de scroll en el borde inferior de la isla */
+    .nav::after{content:"";position:absolute;left:1.15rem;right:1.15rem;bottom:0;height:2.5px;border-radius:999px;background:linear-gradient(90deg,var(--teal),var(--sun),var(--teal));background-size:200% 100%;transform:scaleX(var(--scroll-progress,0));transform-origin:left;transition:transform .1s linear,opacity .3s ease;pointer-events:none;animation:gradient-shift 3s ease-in-out infinite;opacity:0}
+    header.scrolled .nav::after{opacity:1}
+    @keyframes gradient-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+    /* === LOGO: tile con gráfico de reparto (donut dividido) === */
+    .logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--ink);font:800 1.45rem 'Bricolage Grotesque',sans-serif;letter-spacing:-.025em;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    .logo:hover{transform:translateY(-1px)}
+    .logo:focus-visible{outline:none}
+    .logo:focus-visible .logo-mark{box-shadow:0 0 0 3px var(--mist),0 0 0 6px var(--sun)}
+    .logo-mark{position:relative;width:44px;height:44px;border-radius:14px;flex:none;overflow:hidden;background:linear-gradient(150deg,var(--teal) 0%,var(--teal-dark) 100%);box-shadow:0 10px 24px -10px rgba(15,106,99,.9),inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 18px -13px rgba(20,33,61,.65);transition:transform .6s cubic-bezier(.34,1.56,.64,1),border-radius .5s ease,box-shadow .3s ease}
+    .logo:hover .logo-mark{transform:rotate(-6deg) scale(1.07);box-shadow:0 14px 30px -10px rgba(15,106,99,.95),inset 0 1px 0 rgba(255,255,255,.45),inset 0 -10px 18px -13px rgba(20,33,61,.65)}
+    /* Donut de reparto: porciones blancas + una rebanada sun destacada */
+    .logo-mark::before{content:"";position:absolute;left:50%;top:50%;width:27px;height:27px;transform:translate(-50%,-50%);border-radius:50%;background:conic-gradient(var(--white) 0deg 100deg,transparent 100deg 106deg,var(--sun) 106deg 166deg,transparent 166deg 172deg,rgba(255,255,255,.5) 172deg 354deg,transparent 354deg 360deg);-webkit-mask:radial-gradient(farthest-side,transparent 45%,#000 47%);mask:radial-gradient(farthest-side,transparent 45%,#000 47%);transition:transform .9s cubic-bezier(.34,1.4,.5,1)}
+    .logo:hover .logo-mark::before{transform:translate(-50%,-50%) rotate(168deg)}
+    /* Punto central (el "total") */
+    .logo-mark::after{content:"";position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;transform:translate(-50%,-50%);background:var(--sun);box-shadow:0 0 0 3px rgba(15,106,99,.9);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+    .logo:hover .logo-mark::after{transform:translate(-50%,-50%) scale(1.25)}
+    .logo-text{white-space:nowrap;transition:opacity .35s cubic-bezier(.22,1,.36,1),transform .35s cubic-bezier(.22,1,.36,1),width .35s cubic-bezier(.22,1,.36,1),margin .35s cubic-bezier(.22,1,.36,1)}
+    .logo-accent{color:var(--teal)}
+
+    /* Compact mode: el texto se disuelve y la marca queda como ancla */
+    header.compact .logo-text{opacity:0;transform:translateX(-6px);width:0;overflow:hidden;margin-left:-.6rem}
+    header.compact .logo-mark{width:46px;height:46px;border-radius:15px}
+    header.compact .logo:hover .logo-mark{transform:rotate(-5deg) scale(1.05)}
+
+    /* === NAVEGACIÓN MAGNÉTICA === */
+    nav ul{display:flex;gap:.15rem;list-style:none;align-items:center}
+    nav a{position:relative;z-index:0;display:inline-flex;align-items:center;gap:.35rem;font-weight:500;font-size:.86rem;color:var(--ink);text-decoration:none;letter-spacing:.01em;padding:.52rem .92rem;border-radius:100px;transition:color .25s ease,background .25s ease,transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease;will-change:transform,background,box-shadow}
+    nav a:hover{color:var(--teal);background:rgba(15,106,99,.1);transform:translateY(-2px);box-shadow:0 8px 18px -8px rgba(15,106,99,.34)}
+    nav a:active{transform:scale(.96)}
+    nav a:focus-visible{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--sun)}
+
+    /* Efecto magnético: pseudo-elemento que sigue al cursor */
+    nav a.section-link::before{content:"";position:absolute;inset:0;border-radius:100px;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(15,106,99,.18) 0%,transparent 70%);opacity:0;transition:opacity .2s ease;pointer-events:none;z-index:-1}
+    nav a.section-link:hover::before{opacity:1}
+
+    /* Subrayado elástico centrado */
+    nav a.section-link::after{content:"";position:absolute;left:50%;bottom:.28rem;width:0;height:2px;background:var(--teal);border-radius:2px;transform:translateX(-50%) scaleX(0);transform-origin:center;transition:transform .4s cubic-bezier(.34,1.56,.64,1),width .4s cubic-bezier(.34,1.56,.64,1)}
+    nav a.section-link:hover::after,nav a.section-link.active::after{width:calc(100% - 1.84rem);transform:translateX(-50%) scaleX(1)}
+
+    /* Glow específico por sección activa */
+    nav a.section-link.active{color:var(--teal)}
+    nav a.section-link[data-section="beneficios"].active::after{background:var(--teal);box-shadow:0 0 8px var(--teal)}
+    nav a.section-link[data-section="como-funciona"].active::after{background:var(--sun);box-shadow:0 0 8px var(--sun)}
+    nav a.section-link[data-section="faq"].active::after{background:var(--ink);box-shadow:0 0 8px var(--ink)}
+
+    /* Compact mode: pills más pequeñas */
+    header.compact nav a{padding:.42rem .78rem;font-size:.8rem}
+    header.compact nav a.section-link::after{bottom:.18rem}
+
+    /* === CTA: pastilla con destello, flecha en badge y profundidad === */
+    .nav-cta{position:relative;display:inline-flex;align-items:center;gap:.5rem;margin-left:.45rem;padding:.5rem .55rem .5rem 1.25rem;border-radius:999px;font-weight:700;font-size:.85rem;letter-spacing:.01em;color:var(--white);background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);box-shadow:0 10px 26px -10px rgba(15,106,99,.85),0 2px 8px -4px rgba(15,106,99,.5),inset 0 1px 0 rgba(255,255,255,.25);overflow:hidden;isolation:isolate;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease}
+    .nav-cta::before{content:"";position:absolute;top:0;bottom:0;left:-70%;width:45%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);transition:left .7s cubic-bezier(.22,1,.36,1);pointer-events:none;z-index:1}
+    .nav-cta::after{content:"→";width:28px;height:28px;border-radius:50%;background:var(--sun);color:var(--ink);display:grid;place-items:center;font-size:1rem;font-weight:800;line-height:1;position:relative;z-index:2;transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .25s ease}
+    .nav-cta:hover{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);transform:translateY(-2px);box-shadow:0 18px 38px -14px rgba(15,106,99,.95),0 5px 14px -4px rgba(15,106,99,.6),inset 0 1px 0 rgba(255,255,255,.32)}
+    .nav-cta:hover::before{left:130%}
+    .nav-cta:hover::after{transform:rotate(-45deg) scale(1.08)}
+    .nav-cta:active{transform:scale(.97)}
+    .nav-cta:focus-visible{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--sun),0 10px 26px -10px rgba(15,106,99,.85)}
+
+    header.compact .nav-cta{margin-left:.35rem;padding:.42rem .45rem .42rem 1.05rem;font-size:.8rem}
+    header.compact .nav-cta::after{width:24px;height:24px;font-size:.9rem}
+
+    /* === HAMBURGUESA === */
+    .nav-toggle{display:none;width:46px;height:46px;border:0;border-radius:50%;background:transparent;cursor:pointer;padding:0;place-items:center;box-shadow:inset 0 0 0 1.5px rgba(20,33,61,.18);transition:background .25s ease,box-shadow .25s ease,transform .2s cubic-bezier(.34,1.56,.64,1);position:relative}
+    .nav-toggle:hover{background:rgba(20,33,61,.06);box-shadow:inset 0 0 0 1.5px rgba(20,33,61,.32),0 8px 20px -8px rgba(20,33,61,.3);transform:scale(1.05)}
+    .nav-toggle:focus-visible{outline:none;box-shadow:inset 0 0 0 1.5px var(--ink),0 0 0 3px var(--mist),0 0 0 5px var(--sun)}
+    .nav-toggle::before{content:"";position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(15,106,99,.14) 0%,transparent 70%);opacity:0;transition:opacity .2s ease;pointer-events:none}
+    .nav-toggle:hover::before{opacity:1}
+    .nav-toggle span{display:block;width:22px;height:2.5px;border-radius:2px;background:var(--ink);transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .2s ease,background .25s ease,width .3s ease;transform-origin:center}
+    .nav-toggle span+span{margin-top:5px}
+    .nav-toggle span:nth-child(1){width:18px}
+    .nav-toggle span:nth-child(3){width:14px}
+    .nav-toggle:hover span{width:22px}
+    .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7.5px) rotate(45deg);background:var(--teal);width:22px}
+    .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg);background:var(--teal);width:22px}
+
+    /* === PANEL MÓVIL: tarjeta flotante bajo la isla === */
+    @media(max-width:860px){
+      header{padding:.7rem .8rem 0}
+      header.scrolled{padding:.45rem .8rem 0}
+      .nav{height:62px;padding:0 .4rem 0 1rem;border-radius:50px}
+      header.scrolled .nav,header.compact .nav{height:58px}
+      .nav::after{left:1rem;right:1rem}
+      .nav-toggle{display:grid}
+      nav{position:absolute;top:calc(100% + 10px);left:0;right:0;pointer-events:none}
+      nav ul{flex-direction:column;align-items:stretch;gap:.15rem;background:rgba(255,255,255,.97);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);border:1px solid var(--line);border-radius:24px;padding:1rem;box-shadow:0 34px 70px -30px rgba(20,33,61,.5),0 10px 30px -14px rgba(20,33,61,.22);opacity:0;visibility:hidden;transform:translateY(-10px) scale(.97);transition:opacity .35s cubic-bezier(.34,1.56,.64,1),transform .35s cubic-bezier(.34,1.56,.64,1),visibility .35s;will-change:opacity,transform}
+      nav ul.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);pointer-events:auto}
+      nav a{width:100%;padding:.85rem 1rem;border-radius:16px;font-size:.95rem;transform-origin:left center}
+      nav a.section-link::before{display:none}
+      nav a.section-link::after{content:"";left:auto;right:1rem;top:50%;bottom:auto;width:8px;height:8px;transform:translateY(-50%);border-radius:50%;background:transparent;border:2px solid var(--line);transition:background .25s ease,border-color .25s ease,box-shadow .25s ease,transform .3s cubic-bezier(.34,1.56,.64,1)}
+      nav a.section-link{justify-content:flex-start}
+      nav a.section-link:hover::after,nav a.section-link.active::after{width:8px;background:var(--teal);border-color:var(--teal);box-shadow:0 0 12px rgba(15,106,99,.5);transform:translateY(-50%) scale(1.25)}
+      nav a.section-link.active{background:rgba(15,106,99,.07);color:var(--teal)}
+      nav a.section-link[data-section="beneficios"].active::after{background:var(--teal);box-shadow:0 0 12px var(--teal)}
+      nav a.section-link[data-section="como-funciona"].active::after{background:var(--sun);box-shadow:0 0 12px var(--sun)}
+      nav a.section-link[data-section="faq"].active::after{background:var(--ink);box-shadow:0 0 12px var(--ink)}
+      .nav-cta{margin:.6rem 0 0;width:100%;justify-content:space-between;padding:.75rem .6rem .75rem 1.3rem;font-size:.95rem;border-radius:18px}
+      .nav-cta::after{width:32px;height:32px;font-size:1.05rem}
+
+      /* Entrada escalonada en móvil */
+      nav ul.open li{animation:slide-in-up .4s cubic-bezier(.34,1.56,.64,1) backwards}
+      nav ul.open li:nth-child(1){animation-delay:.05s}
+      nav ul.open li:nth-child(2){animation-delay:.1s}
+      nav ul.open li:nth-child(3){animation-delay:.15s}
+      nav ul.open li:nth-child(4){animation-delay:.2s}
+      @keyframes slide-in-up{from{opacity:0;transform:translateY(16px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+    }
+
+    /* === ENTRADA ESCALONADA INICIAL (DESKTOP) === */
+    @media(min-width:861px){
+      nav ul li{animation:fade-in-down .5s cubic-bezier(.25,.46,.45,.94) backwards}
+      nav ul li:nth-child(1){animation-delay:.1s}
+      nav ul li:nth-child(2){animation-delay:.15s}
+      nav ul li:nth-child(3){animation-delay:.2s}
+      nav ul li:nth-child(4){animation-delay:.25s}
+      .logo{animation:fade-in-down .6s cubic-bezier(.25,.46,.45,.94) backwards}
+      @keyframes fade-in-down{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      header,.nav,.nav::after,.logo,.logo-mark,.logo-text,nav a,nav a::after,nav a::before,.nav-cta,.nav-cta::before,.nav-cta::after,.nav-toggle,.nav-toggle span,nav ul,.btn-hero-primary,.btn-hero-primary::before,.btn-hero-primary::after,.demo input[type=range]::-webkit-slider-thumb,.split-ring .fg,.result-value{transition:none;animation:none}
+      nav ul.open li{animation:none}
+    }
+    @media(prefers-reduced-motion:reduce) and (min-width:861px){nav ul li,.logo{animation:none}}
+
+    /* 2. Hero – rediseño con más aire y demo interactiva destacada */
+    .hero{position:relative;padding:5.5rem 0 6rem;overflow:hidden}
+    .hero::before{content:"";position:absolute;top:0;left:50%;width:700px;height:700px;transform:translateX(-50%);background:radial-gradient(circle,rgba(15,106,99,.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+    .hero-grid{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:4rem;align-items:center;z-index:1}
+    .hero h1{margin-bottom:1.2rem}
+    .hero p.lead{font-size:1.25rem;line-height:1.65;margin:1.4rem 0 2.2rem;max-width:54ch}
+    .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+    .hero small{display:flex;align-items:center;gap:.5rem;margin-top:1.4rem;opacity:.7;font-size:.9rem}
+    .hero small::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sun);box-shadow:0 0 12px var(--sun)}
+    @media(max-width:980px){.hero-grid{grid-template-columns:1fr;gap:3rem}.hero::before{width:100%;height:500px;left:0;transform:none;top:-100px}}
+    @media(max-width:600px){.hero{padding:4rem 0 5rem}}
+
+    /* Botones hero */
+    .btn-hero-primary{position:relative;display:inline-flex;align-items:center;gap:.6rem;padding:1.05rem 2rem;border-radius:999px;font:700 1rem 'DM Sans',sans-serif;color:var(--white);background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);box-shadow:0 12px 30px -12px rgba(15,106,99,.9),0 2px 8px -4px rgba(15,106,99,.5),inset 0 1px 0 rgba(255,255,255,.25);text-decoration:none;overflow:hidden;isolation:isolate;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease}
+    .btn-hero-primary::before{content:"";position:absolute;inset:-100% 0;background:linear-gradient(105deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);transition:left .7s cubic-bezier(.22,1,.36,1);left:-100%;pointer-events:none;z-index:1}
+    .btn-hero-primary::after{content:"→";width:30px;height:30px;border-radius:50%;background:var(--sun);color:var(--ink);display:grid;place-items:center;font-size:1.05rem;font-weight:800;line-height:1;flex-shrink:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+    .btn-hero-primary:hover{transform:translateY(-3px);box-shadow:0 20px 40px -16px rgba(15,106,99,.95),0 5px 14px -4px rgba(15,106,99,.6),inset 0 1px 0 rgba(255,255,255,.32)}
+    .btn-hero-primary:hover::before{left:200%}
+    .btn-hero-primary:hover::after{transform:rotate(-45deg) scale(1.08)}
+    .btn-hero-primary:active{transform:scale(.98)}
+    .btn-hero-secondary{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 1.6rem;border-radius:999px;font:600 .95rem 'DM Sans',sans-serif;color:var(--ink);background:transparent;border:2px solid var(--line);text-decoration:none;transition:border-color .25s ease,background .25s ease,transform .15s ease}
+    .btn-hero-secondary:hover{border-color:var(--teal);background:rgba(15,106,99,.06);transform:translateY(-1px)}
+    .btn-hero-secondary:active{transform:scale(.98)}
+
+    /* Demo interactiva – tarjeta elevada con visualización de reparto */
+    .demo{position:relative;background:linear-gradient(145deg,var(--ink) 0%,#0d1a30 100%);color:var(--white);border-radius:28px;padding:2rem;box-shadow:0 32px 64px -28px rgba(20,33,61,.7),0 0 0 1px rgba(255,255,255,.04);overflow:hidden}
+    .demo::before{content:"";position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(15,106,99,.3) 0%,transparent 70%);pointer-events:none}
+    .demo h3{font-size:1.05rem;font-weight:500;opacity:.85;margin-bottom:1.5rem;letter-spacing:.01em}
+    .demo-field{margin-top:1.2rem}
+    .demo-field:first-of-type{margin-top:0}
+    .demo-field label{display:flex;align-items:center;justify-content:space-between;font-size:.85rem;opacity:.85;margin-bottom:.5rem}
+    .demo-field label span{font-weight:700;color:var(--sun);opacity:1;font-family:'Bricolage Grotesque',sans-serif}
+    .demo input[type=number]{width:100%;padding:.9rem 1.1rem;border-radius:14px;border:0;font:700 1.5rem 'Bricolage Grotesque',sans-serif;color:var(--ink);background:var(--white);box-shadow:inset 0 2px 8px rgba(20,33,61,.1);transition:box-shadow .2s ease}
+    .demo input[type=number]:focus{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--sun),inset 0 2px 8px rgba(20,33,61,.1)}
+    .demo input[type=range]{width:100%;height:8px;appearance:none;background:rgba(255,255,255,.1);border-radius:4px;margin-top:.6rem;cursor:pointer}
+    .demo input[type=range]::-webkit-slider-thumb{appearance:none;width:24px;height:24px;border-radius:50%;background:var(--sun);box-shadow:0 4px 12px -4px rgba(245,184,61,.8);transition:transform .2s ease,box-shadow .2s ease}
+    .demo input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15);box-shadow:0 6px 16px -4px rgba(245,184,61,.9)}
+    .demo input[type=range]::-moz-range-thumb{width:24px;height:24px;border:0;border-radius:50%;background:var(--sun);box-shadow:0 4px 12px -4px rgba(245,184,61,.8)}
+
+    /* Visualización del reparto: anillos por persona */
+    .split-visual{margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
+    .split-ring{position:relative;width:64px;height:64px;flex-shrink:0}
+    .split-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+    .split-ring circle{fill:none;stroke-width:4;stroke-linecap:round}
+    .split-ring .bg{stroke:rgba(255,255,255,.12)}
+    .split-ring .fg{stroke:var(--sun);stroke-dasharray:176;stroke-dashoffset:176;transition:stroke-dashoffset .6s cubic-bezier(.34,1.56,.64,1)}
+    .split-ring span{position:absolute;inset:0;display:grid;place-items:center;font:700 .75rem 'Bricolage Grotesque',sans-serif;color:var(--white)}
+    @media(max-width:500px){.split-ring{width:56px;height:56px}}
+
+    /* Resultado grande con animación */
+    .result{margin-top:1.8rem;padding:1.4rem;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;gap:.5rem;text-align:center}
+    .result-label{font-size:.85rem;opacity:.8;text-transform:uppercase;letter-spacing:.08em}
+    .result-value{font:800 2.5rem 'Bricolage Grotesque',sans-serif;color:var(--sun);line-height:1;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    .result-value.updating{transform:scale(1.05)}
+    .result-per-person{font-size:.9rem;opacity:.7}
+
+    /* Presets rápidos */
+    .demo-presets{display:flex;gap:.5rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center}
+    .demo-preset{padding:.5rem .9rem;border-radius:999px;font-size:.8rem;font-weight:600;color:var(--ink);background:var(--white);border:0;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,background .2s ease}
+    .demo-preset:hover{transform:translateY(-2px);box-shadow:0 6px 16px -6px rgba(255, 3, 171, 0.4)}
+    .demo-preset:active{transform:scale(.97)}
+    .demo-preset:focus-visible{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--sun)}
+
+    /* 3. Beneficios – tarjetas vivas con iconos interactivos y flujo conectivo */
+    .beneficios-section{position:relative}
+    .beneficios-section::before{content:"";position:absolute;top:50%;left:0;right:0;height:2px;transform:translateY(-50%);background:linear-gradient(90deg,transparent 0%,rgba(15,106,99,.15) 20%,rgba(15,106,99,.15) 80%,transparent 100%);pointer-events:none;z-index:0}
+    .benefits-grid{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3.5rem;z-index:1}
+    
+    .benefit{position:relative;background:rgba(255,255,255,.7);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);border:1px solid rgba(201,218,214,.6);border-radius:24px;padding:2.5rem 2rem 2rem;transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s ease,border-color .3s ease;will-change:transform,box-shadow;overflow:hidden;transform-style:preserve-3d;perspective:1000px}
+    .benefit::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+    .benefit:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 28px 56px -20px rgba(20,33,61,.35),0 8px 24px -12px rgba(20,33,61,.15);border-color:var(--accent)}
+    .benefit:hover::before{transform:scaleX(1)}
+    .benefit:focus-within{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--accent),0 28px 56px -20px rgba(20,33,61,.35)}
+    
+    /* Efecto 3D tilt al mover ratón */
+    .benefit .benefit-inner{transform-style:preserve-3d;transition:transform .15s ease-out;will-change:transform}
+    
+    /* Icono contenedor con efecto magnético y respiración */
+    .benefit-icon{position:relative;width:72px;height:72px;border-radius:20px;margin-bottom:1.5rem;display:grid;place-items:center;background:linear-gradient(135deg,rgba(15,106,99,.12) 0%,rgba(15,106,99,.04) 100%);border:1px solid rgba(15,106,99,.18);box-shadow:0 8px 24px -8px rgba(15,106,99,.3),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease,background .3s ease;will-change:transform,box-shadow}
+    .benefit:hover .benefit-icon{transform:scale(1.1) rotate(3deg);box-shadow:0 16px 32px -10px rgba(15,106,99,.5),inset 0 1px 0 rgba(255,255,255,.6)}
+    .benefit-icon svg{width:36px;height:36px;stroke:var(--accent);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s ease,transform .5s cubic-bezier(.34,1.56,.64,1)}
+    .benefit:hover .benefit-icon svg{transform:scale(1.15)}
+    
+    /* Animación de "respiración" del icono */
+    @keyframes icon-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+    .benefit-icon{animation:icon-breathe 4s ease-in-out infinite}
+    .benefit:hover .benefit-icon{animation:none}
+    
+    /* Iconos específicos */
+    .benefit:nth-child(1){--accent:var(--teal)}
+    .benefit:nth-child(1) .benefit-icon{background:linear-gradient(135deg,rgba(15,106,99,.12) 0%,rgba(15,106,99,.04) 100%);border-color:rgba(15,106,99,.18)}
+    
+    .benefit:nth-child(2){--accent:var(--sun)}
+    .benefit:nth-child(2) .benefit-icon{background:linear-gradient(135deg,rgba(245,184,61,.15) 0%,rgba(245,184,61,.05) 100%);border-color:rgba(245,184,61,.25)}
+    
+    .benefit:nth-child(3){--accent:var(--ink)}
+    .benefit:nth-child(3) .benefit-icon{background:linear-gradient(135deg,rgba(20,33,61,.1) 0%,rgba(20,33,61,.03) 100%);border-color:rgba(20,33,61,.15)}
+    
+    .benefit h3{font:700 1.25rem 'Bricolage Grotesque',sans-serif;color:var(--ink);letter-spacing:-.015em;margin-bottom:.75rem;transition:color .25s ease}
+    .benefit:hover h3{color:var(--accent)}
+    .benefit p{font-size:1rem;line-height:1.7;color:rgba(20,33,61,.75);margin:0;transition:color .25s ease}
+    .benefit:hover p{color:rgba(20,33,61,.9)}
+    
+    /* Etiqueta de métrica flotante */
+    .benefit-metric{position:absolute;top:1.5rem;right:1.5rem;font:700 .75rem 'Bricolage Grotesque',sans-serif;color:var(--accent);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;white-space:nowrap;pointer-events:none}
+    .benefit:hover .benefit-metric{opacity:1;transform:translateY(0)}
+    
+    /* Partículas de fondo sutiles por tarjeta */
+    .benefit::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--px,50%) var(--py,50%),var(--accent) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none;z-index:-1}
+    .benefit:hover::after{opacity:.03}
+    
+    /* Entrada escalonada */
+    @media(min-width:861px){
+      .benefit{opacity:0;transform:translateY(30px) scale(.98);animation:benefit-in .7s cubic-bezier(.22,1,.36,1) forwards}
+      .benefit:nth-child(1){animation-delay:.1s}
+      .benefit:nth-child(2){animation-delay:.2s}
+      .benefit:nth-child(3){animation-delay:.3s}
+      @keyframes benefit-in{to{opacity:1;transform:translateY(0) scale(1)}}
+    }
+    
+    @media(max-width:980px){
+      .benefits-grid{grid-template-columns:1fr;gap:1.5rem}
+      .beneficios-section::before{display:none}
+    }
+    
+    @media(max-width:600px){
+      .benefit{padding:2rem 1.5rem}
+      .benefit-icon{width:64px;height:64px;border-radius:18px}
+      .benefit-metric{top:1rem;right:1rem;font-size:.7rem}
+    }
+    
+    @media(prefers-reduced-motion:reduce){
+      .benefit,.benefit::before,.benefit-icon,.benefit-icon svg,.benefit-metric,.benefit::after{transition:none;animation:none}
+      .benefit{opacity:1;transform:none}
+    }
+
+    /* 4 y 7. CTA – banda disruptiva con flujo dinámico */
+    .cta-band{position:relative;background:radial-gradient(1200px 600px at 20% 10%,rgba(245,184,61,.22) 0%,transparent 60%),radial-gradient(1000px 600px at 80% 0%,rgba(255,255,255,.12) 0%,transparent 55%),linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);color:var(--white);text-align:center;overflow:hidden;padding:5rem 0}
+    .cta-band::before,.cta-band::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);opacity:.4;pointer-events:none}
+    .cta-band::before{width:320px;height:320px;background:var(--sun);top:-120px;left:-120px;animation:cta-orb 18s ease-in-out infinite alternate}
+    .cta-band::after{width:280px;height:280px;background:var(--white);bottom:-140px;right:-100px;animation:cta-orb 22s ease-in-out infinite alternate-reverse}
+    @keyframes cta-orb{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,-20px) scale(1.08)}}
+    .cta-band .wrap{position:relative;z-index:1}
+    .cta-band h2{margin:0 0 1rem;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-.02em}
+    .cta-band p{margin:0 auto 2.6rem;font-size:clamp(1.05rem,2vw,1.25rem);max-width:62ch;opacity:.95;line-height:1.8}
+    .cta-band .cta-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;align-items:center}
+    .cta-band.dark{background:radial-gradient(1200px 600px at 20% 10%,rgba(15,106,99,.25) 0%,transparent 60%),radial-gradient(1000px 600px at 80% 0%,rgba(255,255,255,.06) 0%,transparent 55%),linear-gradient(135deg,#0d1a30 0%,var(--ink) 100%)}
+    .cta-band.dark::before{background:var(--teal)}
+    .cta-band.dark::after{background:var(--sun);opacity:.25}
+    .cta-band .btn-cta{position:relative;display:inline-flex;align-items:center;gap:.7rem;padding:1.2rem 2.6rem;border-radius:999px;font:700 1.05rem 'DM Sans',sans-serif;color:var(--ink);background:radial-gradient(400px 100% at 50% 0%,rgba(255,255,255,.8) 0%,var(--white) 60%),var(--white);box-shadow:0 20px 50px -18px rgba(20,33,61,.9),0 6px 18px -10px rgba(20,33,61,.6),inset 0 1px 0 rgba(255,255,255,.9);text-decoration:none;overflow:hidden;isolation:isolate;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease}
+    .cta-band .btn-cta::before{content:"";position:absolute;top:0;left:-120%;width:40%;height:100%;background:linear-gradient(105deg,transparent,rgba(15,106,99,.18),transparent);transform:skewX(-25deg);transition:left .8s cubic-bezier(.22,1,.36,1);z-index:1}
+    .cta-band .btn-cta::after{content:"→";width:34px;height:34px;border-radius:50%;background:var(--sun);color:var(--ink);display:grid;place-items:center;font-size:1.1rem;font-weight:800;flex-shrink:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 12px -6px rgba(245,184,61,.9)}
+    .cta-band .btn-cta:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 28px 60px -20px rgba(20,33,61,.95),0 10px 24px -12px rgba(20,33,61,.7),inset 0 1px 0 rgba(255,255,255,.95)}
+    .cta-band .btn-cta:hover::before{left:140%}
+    .cta-band .btn-cta:hover::after{transform:rotate(-45deg) scale(1.1)}
+    .cta-band .btn-cta:active{transform:scale(.98)}
+    .cta-band .btn-cta:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(255,255,255,.6),0 0 0 6px var(--sun),0 28px 60px -20px rgba(20,33,61,.95)}
+    @media(prefers-reduced-motion:reduce){.cta-band::before,.cta-band::after,.cta-band .btn-cta::before{animation:none;transition:none}}
+
+    /* 5. Explicación – Timeline horizontal con nodos-card y líneas animadas */
+    .como-funciona{position:relative;padding:2rem 0}
+    .como-funciona .wrap{max-width:1100px}
+    .steps{position:relative;display:flex;gap:0;justify-content:center;align-items:flex-start;margin-top:3.5rem;padding:0 2rem}
+    .steps::before{content:"";position:absolute;top:48px;left:10%;right:10%;height:3px;background:linear-gradient(90deg,var(--line) 0%,var(--line) 100%);border-radius:2px;z-index:0}
+    .steps::after{content:"";position:absolute;top:48px;left:10%;width:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--sun),var(--ink));border-radius:2px;z-index:1;animation:timeline-draw 2.4s cubic-bezier(.22,1,.36,1) forwards .3s}
+    @keyframes timeline-draw{to{width:80%}}
+    .step{position:relative;display:flex;flex-direction:column;align-items:center;flex:1;max-width:320px;z-index:2}
+    .step:first-child{padding-left:0}
+    .step:last-child{padding-right:0}
+    .step-node{position:relative;width:96px;height:96px;border-radius:24px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.95) 0%,rgba(234,243,241,.9) 100%);border:2px solid var(--step-color);box-shadow:0 12px 32px -8px rgba(var(--step-rgb),.25),0 4px 16px -4px rgba(var(--step-rgb),.15),inset 0 1px 0 rgba(255,255,255,.8);transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s ease,border-color .3s ease;will-change:transform,box-shadow;overflow:hidden}
+    .step-node::before{content:"";position:absolute;inset:-2px;border-radius:26px;background:linear-gradient(135deg,var(--step-color),var(--step-glow));opacity:0;transition:opacity .3s ease;z-index:-1}
+    .step:hover .step-node{transform:scale(1.12) translateY(-4px);box-shadow:0 20px 48px -12px rgba(var(--step-rgb),.35),0 8px 24px -8px rgba(var(--step-rgb),.2),inset 0 1px 0 rgba(255,255,255,.9)}
+    .step:hover .step-node::before{opacity:1}
+    .step:focus-within .step-node{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 6px var(--step-color),0 20px 48px -12px rgba(var(--step-rgb),.35)}
+    .step-node svg{width:40px;height:40px;stroke:var(--step-color);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:transform .5s cubic-bezier(.34,1.56,.64,1),stroke .3s ease}
+    .step:hover .step-node svg{transform:scale(1.18) rotate(6deg)}
+    .step-content{width:100%;margin-top:1.4rem;text-align:center;opacity:0;transform:translateY(16px);animation:content-in .7s cubic-bezier(.22,1,.36,1) forwards}
+    .step:nth-child(1) .step-content{animation-delay:.4s}
+    .step:nth-child(2) .step-content{animation-delay:.6s}
+    .step:nth-child(3) .step-content{animation-delay:.8s}
+    @keyframes content-in{to{opacity:1;transform:translateY(0)}}
+    .step-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:var(--step-color);color:var(--white);font:700 .75rem 'Bricolage Grotesque',sans-serif;margin-bottom:.75rem;box-shadow:0 4px 12px -4px var(--step-color)}
+    .step h3{font:700 1.15rem 'Bricolage Grotesque',sans-serif;color:var(--ink);letter-spacing:-.01em;margin-bottom:.5rem;transition:color .25s ease}
+    .step:hover h3{color:var(--step-color)}
+    .step p{font-size:.95rem;line-height:1.65;color:rgba(20,33,61,.68);margin:0;transition:color .25s ease}
+    .step:hover p{color:rgba(20,33,61,.85)}
+    .step-cta{margin-top:1rem;display:inline-flex;align-items:center;gap:.4rem;font:600 .85rem 'DM Sans',sans-serif;color:var(--step-color);text-decoration:none;padding:.5rem 1rem;border-radius:999px;background:rgba(var(--step-rgb),.1);border:1px solid transparent;transition:all .25s ease;opacity:0;transform:translateY(8px);animation:cta-in .5s cubic-bezier(.34,1.56,.64,1) forwards}
+    .step:nth-child(1) .step-cta{animation-delay:.7s}
+    .step:nth-child(2) .step-cta{animation-delay:.9s}
+    .step:nth-child(3) .step-cta{animation-delay:1.1s}
+    @keyframes cta-in{to{opacity:1;transform:translateY(0)}}
+    .step-cta:hover{background:var(--step-color);color:var(--ink);border-color:var(--step-color);box-shadow:0 6px 20px -6px var(--step-color)}
+    .step-cta svg{width:16px;height:16px;transition:transform .25s ease}
+    .step-cta:hover svg{transform:translateX(3px)}
+    .step:nth-child(1){--step-color:var(--teal);--step-rgb:15,106,99;--step-glow:rgba(15,106,99,.4)}
+    .step:nth-child(2){--step-color:var(--sun);--step-rgb:245,184,61;--step-glow:rgba(245,184,61,.4)}
+    .step:nth-child(3){--step-color:var(--ink);--step-rgb:20,33,61;--step-glow:rgba(20,33,61,.4)}
+    @media(max-width:980px){
+      .steps{flex-wrap:wrap;gap:2.5rem;padding:0 1rem}
+      .steps::before,.steps::after{top:48px;left:50%;width:3px;height:calc(100% - 96px);transform:translateX(-50%)}
+      .steps::after{height:0;width:3px;animation:timeline-draw-v 2.4s cubic-bezier(.22,1,.36,1) forwards .3s}
+      @keyframes timeline-draw-v{to{height:calc(100% - 96px)}}
+      .step{flex:0 0 calc(50% - 1.25rem);max-width:none}
+      .step:nth-child(3){flex:0 0 100%;max-width:320px;margin:0 auto}
+    }
+    @media(max-width:600px){
+      .steps{flex-direction:column;align-items:center;gap:2rem;padding:0}
+      .steps::before,.steps::after{left:50%;top:48px;width:3px;height:calc(100% - 96px);transform:translateX(-50%)}
+      .steps::after{height:0;animation:timeline-draw-v 2.4s cubic-bezier(.22,1,.36,1) forwards .3s}
+      .step{width:100%;max-width:300px}
+      .step-node{width:80px;height:80px;border-radius:20px}
+      .step-node svg{width:34px;height:34px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .steps::after{animation:none;width:80%}
+      .step-content,.step-cta{animation:none;opacity:1;transform:none}
+      .step-node,.step-node svg,.step-cta{transition:none}
+      .step:hover .step-node{transform:none}
+    }
+
+    /* 6. Testimonios – tarjetas con identidad real (avatares, rating, verificación) */
+    .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;align-items:stretch}
+    blockquote.quote{position:relative;display:flex;flex-direction:column;background:linear-gradient(160deg,var(--white) 0%,#fbfdfc 100%);padding:1.6rem 1.6rem 1.4rem;border-radius:18px;border:1px solid var(--line);box-shadow:0 12px 32px -18px rgba(20,33,61,.25),0 2px 8px -4px rgba(20,33,61,.06);transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s ease,border-color .3s ease;overflow:hidden}
+    blockquote.quote::before{content:"\201C";position:absolute;top:.4rem;right:1.1rem;font:800 5rem/1 'Bricolage Grotesque',serif;color:var(--mist);opacity:.9;pointer-events:none;z-index:0}
+    blockquote.quote:hover{transform:translateY(-6px);box-shadow:0 24px 48px -20px rgba(20,33,61,.3),0 6px 18px -8px rgba(20,33,61,.12);border-color:var(--teal)}
+    blockquote.quote:focus-within{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--teal),0 24px 48px -20px rgba(20,33,61,.3)}
+    .quote-rating{display:flex;gap:.15rem;margin-top:1.6rem;margin-bottom:.9rem;position:relative;z-index:1}
+    .quote-rating svg{width:16px;height:16px;fill:var(--sun);stroke:none}
+    .quote-body{position:relative;z-index:1;font-size:1rem;line-height:1.65;color:rgba(20,33,61,.85);margin:0 0 1.4rem;flex:1}
+    .quote-person{display:flex;align-items:center;gap:.8rem;position:relative;z-index:1;padding-top:1.1rem;border-top:1px solid var(--line);margin-top:auto}
+    .quote-avatar{width:46px;height:46px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;font:800 1rem 'Bricolage Grotesque',sans-serif;color:var(--white);background:linear-gradient(135deg,var(--avatar-a) 0%,var(--avatar-b) 100%);box-shadow:0 6px 16px -6px var(--avatar-a);position:relative}
+    .quote-avatar::after{content:"";position:absolute;right:-2px;bottom:-2px;width:16px;height:16px;border-radius:50%;background:var(--teal);border:2.5px solid var(--white);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-size:9px;background-position:center;background-repeat:no-repeat}
+    .quote-meta{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+    .quote-name{font:700 .95rem 'DM Sans',sans-serif;color:var(--ink);display:flex;align-items:center;gap:.35rem}
+    .quote-name .verified{display:inline-flex;color:var(--teal);flex-shrink:0}
+    .quote-name .verified svg{width:14px;height:14px;fill:currentColor}
+    .quote-role{font-size:.82rem;color:rgba(20,33,61,.6);display:flex;align-items:center;gap:.3rem}
+    .quote-role .dot{width:3px;height:3px;border-radius:50%;background:var(--line)}
+    .quote-tag{position:absolute;top:1.1rem;left:1.6rem;z-index:1;font:700 .68rem 'DM Sans',sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--teal);background:rgba(15,106,99,.09);padding:.28rem .6rem;border-radius:999px;display:inline-flex;align-items:center;gap:.3rem}
+    .quote-tag svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    .quote:nth-child(1){--avatar-a:#0F6B63;--avatar-b:#0A4A45}
+    .quote:nth-child(2){--avatar-a:#F5B83D;--avatar-b:#d99a1f}
+    .quote:nth-child(3){--avatar-a:#14213D;--avatar-b:#2a3d63}
+    @media(min-width:861px){
+      blockquote.quote{opacity:0;transform:translateY(28px);animation:quote-in .7s cubic-bezier(.22,1,.36,1) forwards}
+      blockquote.quote:nth-child(1){animation-delay:.05s}
+      blockquote.quote:nth-child(2){animation-delay:.18s}
+      blockquote.quote:nth-child(3){animation-delay:.31s}
+      @keyframes quote-in{to{opacity:1;transform:translateY(0)}}
+    }
+    @media(max-width:860px){.quotes{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){
+      blockquote.quote,.quote-avatar{transition:none;animation:none}
+      blockquote.quote{opacity:1;transform:none}
+      blockquote.quote:hover{transform:none}
+    }
+
+    /* 8. FAQ – acordeón con tarjetas, icono animado y acento */
+    .faq{max-width:820px;margin:2.5rem auto 0;display:grid;gap:.85rem}
+    .faq details{position:relative;background:var(--white);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:border-color .3s ease,box-shadow .35s ease,background .3s ease}
+    .faq details::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--teal),var(--teal-dark));transform:scaleY(0);transform-origin:top;transition:transform .35s cubic-bezier(.34,1.56,.64,1);z-index:1}
+    .faq details:hover{border-color:rgba(15,106,99,.4);box-shadow:0 14px 32px -20px rgba(20,33,61,.3)}
+    .faq details[open]{border-color:var(--teal);box-shadow:0 20px 44px -24px rgba(15,106,99,.45);background:linear-gradient(180deg,var(--white) 0%,rgba(234,243,241,.5) 100%)}
+    .faq details[open]::before{transform:scaleY(1)}
+    .faq details[open] summary{color:var(--teal)}
+    .faq summary{cursor:pointer;font:700 1.08rem 'Bricolage Grotesque','DM Sans',sans-serif;letter-spacing:-.01em;color:var(--ink);list-style:none;display:flex;align-items:center;justify-content:flex-start;gap:1rem;padding:1.25rem 1.4rem;transition:color .25s ease,background .25s ease}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary::marker{content:""}
+    .faq summary:hover{background:rgba(15,106,99,.04)}
+    .faq summary:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--teal);border-radius:16px}
+    .faq-icon{flex-shrink:0;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--mist);color:var(--teal);transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease}
+    .faq-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .faq details:hover .faq-icon{transform:scale(1.06)}
+    .faq details[open] .faq-icon{background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:var(--white)}
+    .faq-q{flex:1;min-width:0;text-align:left}
+    .faq summary::after{content:"+";flex-shrink:0;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--mist);color:var(--teal);font:700 1.5rem/1 'DM Sans',sans-serif;transition:transform .4s cubic-bezier(.34,1.56,.64,1),background .3s ease,color .3s ease,box-shadow .3s ease}
+    .faq details:hover summary::after{box-shadow:0 6px 16px -8px rgba(15,106,99,.6)}
+    .faq details[open] summary::after{content:"–";transform:rotate(180deg);background:var(--teal);color:var(--white)}
+    .faq details p{margin:0;padding:0 1.4rem 1.35rem;color:rgba(20,33,61,.78);font-size:1rem;line-height:1.7;max-width:66ch}
+    .faq details[open] p{animation:faq-in .38s cubic-bezier(.22,1,.36,1) both}
+    @keyframes faq-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:600px){
+      .faq{margin-top:2rem}
+      .faq summary{padding:1.1rem 1.1rem;font-size:1rem;gap:.8rem}
+      .faq-icon{width:34px;height:34px;border-radius:10px}
+      .faq-icon svg{width:18px;height:18px}
+      .faq summary::after{width:30px;height:30px;font-size:1.25rem}
+      .faq details p{padding:0 1.1rem 1.15rem}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .faq details,.faq details::before,.faq summary,.faq summary::after,.faq-icon,.faq details p{transition:none;animation:none}
+    }
+
+    /* 9. Pre-footer: formulario de lista de espera (conectado a HubSpot) */
+    .prefooter{position:relative;background:linear-gradient(180deg,var(--white) 0%,var(--mist) 100%);overflow:hidden;--danger:#C8402F}
+    .prefooter::before{content:"";position:absolute;top:-160px;right:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(15,106,99,.12) 0%,transparent 68%);pointer-events:none}
+    .prefooter::after{content:"";position:absolute;bottom:-200px;left:-140px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(245,184,61,.14) 0%,transparent 70%);pointer-events:none}
+    .prefooter .wrap{position:relative;z-index:1}
+    .form-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:4rem;align-items:center}
+    .prefooter-copy h2{margin-bottom:1rem}
+    .prefooter-copy p{font-size:1.1rem;line-height:1.7;color:rgba(20,33,61,.78);max-width:46ch}
+    .trust-list{margin-top:1.8rem;display:grid;gap:.8rem;list-style:none}
+    .trust-list li{display:flex;align-items:center;gap:.7rem;font-size:.96rem;color:rgba(20,33,61,.85)}
+    .trust-list li svg{flex-shrink:0;width:22px;height:22px;padding:3px;border-radius:50%;color:var(--teal);background:rgba(15,106,99,.1);stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+
+    .form-box{position:relative;background:var(--white);padding:2.2rem;border-radius:26px;border:1px solid var(--line);box-shadow:0 48px 90px -46px rgba(20,33,61,.55),0 18px 40px -24px rgba(20,33,61,.3);overflow:hidden}
+    .form-box::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--teal) 0%,var(--sun) 100%)}
+    .form-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--line)}
+    .form-head-icon{flex-shrink:0;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:var(--white);background:linear-gradient(135deg,var(--teal),var(--teal-dark));box-shadow:0 12px 24px -12px rgba(15,106,99,.9),inset 0 1px 0 rgba(255,255,255,.3)}
+    .form-head-icon svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .form-head-title{flex:1;font:700 1.06rem 'Bricolage Grotesque',sans-serif;color:var(--ink);line-height:1.2}
+    .form-head-pill{flex-shrink:0;font:700 .72rem 'DM Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);background:rgba(15,106,99,.1);padding:.32rem .7rem;border-radius:999px;white-space:nowrap}
+
+    .waitlist-form{display:grid;gap:1.15rem}
+    .field{border:0;padding:0;margin:0;min-width:0}
+    .field .label,.field legend{display:block;padding:0;font:600 .88rem 'DM Sans',sans-serif;color:var(--ink);margin-bottom:.45rem}
+    .field .label .req{color:var(--teal)}
+    .field .label .opt{color:rgba(20,33,61,.5);font-weight:500}
+    .field input[type=text],.field input[type=email],.field input[type=tel]{width:100%;padding:.9rem 1rem;border-radius:12px;border:1.5px solid transparent;background:var(--mist);font:500 .98rem 'DM Sans',sans-serif;color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
+    .field input::placeholder{color:rgba(20,33,61,.42)}
+    .field input:hover{background:#e2efec}
+    .field input:focus{outline:none;background:var(--white);border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,106,99,.16)}
+    .field.invalid input{border-color:var(--danger);background:var(--white);box-shadow:0 0 0 3px rgba(200,64,47,.12)}
+    .field-error{display:none;margin-top:.4rem;font-size:.82rem;color:var(--danger)}
+    .field.invalid .field-error{display:block}
+
+    .people-options{display:flex;gap:.5rem;flex-wrap:wrap}
+    .people-options input,.chips input{position:absolute;opacity:0;width:1px;height:1px}
+    .people-options label{cursor:pointer;padding:.55rem 1.05rem;border-radius:999px;border:1.5px solid transparent;background:var(--mist);font:600 .9rem 'DM Sans',sans-serif;color:var(--ink);transition:border-color .2s ease,background .2s ease,color .2s ease,box-shadow .2s ease;user-select:none}
+    .people-options label:hover{border-color:var(--teal)}
+    .people-options input:checked + label{background:var(--teal);border-color:var(--teal);color:var(--white);box-shadow:0 8px 18px -10px rgba(15,106,99,.8)}
+    .people-options input:focus-visible + label{box-shadow:0 0 0 3px rgba(15,106,99,.25)}
+
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem}
+    .chips label{cursor:pointer;padding:.5rem 1rem;border-radius:999px;border:1.5px solid transparent;background:var(--mist);font:600 .88rem 'DM Sans',sans-serif;color:var(--ink);transition:border-color .2s ease,background .2s ease,box-shadow .2s ease;user-select:none}
+    .chips label:hover{border-color:var(--sun);background:rgba(245,184,61,.14)}
+    .chips input:checked + label{background:rgba(245,184,61,.24);border-color:var(--sun)}
+    .chips input:focus-visible + label{box-shadow:0 0 0 3px rgba(245,184,61,.35)}
+
+    .consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.85rem;line-height:1.55;color:rgba(20,33,61,.72);cursor:pointer}
+    .consent input{flex-shrink:0;width:18px;height:18px;margin-top:.12rem;accent-color:var(--teal);cursor:pointer}
+    .consent a{color:var(--teal);text-decoration:underline;text-underline-offset:2px}
+    .consent.invalid{color:var(--danger)}
+    .consent.invalid input{outline:2px solid var(--danger);outline-offset:2px;border-radius:4px}
+
+    .hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+    .btn-submit{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:1.05rem 1.6rem;margin-top:.3rem;border:0;border-radius:999px;cursor:pointer;font:700 1rem 'DM Sans',sans-serif;color:var(--white);background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);box-shadow:0 14px 30px -14px rgba(15,106,99,.9),inset 0 1px 0 rgba(255,255,255,.25);overflow:hidden;isolation:isolate;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease}
+    .btn-submit::before{content:"";position:absolute;top:0;bottom:0;left:-70%;width:45%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);transition:left .7s cubic-bezier(.22,1,.36,1);pointer-events:none}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 20px 40px -16px rgba(15,106,99,.95),inset 0 1px 0 rgba(255,255,255,.32)}
+    .btn-submit:hover::before{left:140%}
+    .btn-submit:active{transform:scale(.99)}
+    .btn-submit:focus-visible{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--sun),0 14px 30px -14px rgba(15,106,99,.9)}
+    .btn-submit[disabled]{opacity:.75;cursor:progress;transform:none}
+    .btn-submit .spinner{display:none;width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.45);border-top-color:var(--white);animation:btn-spin .7s linear infinite}
+    .btn-submit.loading .spinner{display:block}
+    @keyframes btn-spin{to{transform:rotate(360deg)}}
+
+    .form-note{font-size:.8rem;color:rgba(20,33,61,.55);text-align:center;margin:0}
+    .form-status{display:none;align-items:flex-start;gap:.6rem;padding:.85rem 1rem;border-radius:12px;font-size:.88rem;line-height:1.5}
+    .form-status.show{display:flex}
+    .form-status svg{flex-shrink:0;width:18px;height:18px;margin-top:.1rem;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+    .form-status.error{background:rgba(200,64,47,.1);color:#8f2b1f}
+
+    .form-success{display:none;text-align:center;padding:.5rem 0}
+    .form-success.show{display:block;animation:faq-in .45s cubic-bezier(.22,1,.36,1) both}
+    .form-success .check{width:64px;height:64px;margin:0 auto 1.1rem;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--teal),var(--teal-dark));box-shadow:0 16px 34px -14px rgba(15,106,99,.8)}
+    .form-success .check svg{width:32px;height:32px;stroke:var(--white);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+    .form-success h3{font:700 1.35rem 'Bricolage Grotesque',sans-serif;color:var(--ink);margin-bottom:.5rem}
+    .form-success p{margin:0 auto;max-width:40ch;color:rgba(20,33,61,.75);font-size:.96rem}
+    .form-success strong{color:var(--teal-dark)}
+
+    @media(max-width:860px){
+      .form-grid{grid-template-columns:1fr;gap:2.5rem}
+      .prefooter-copy p{max-width:none}
+    }
+    @media(max-width:520px){
+      .form-box{padding:1.4rem;border-radius:20px}
+      .people-options label,.chips label{font-size:.85rem;padding:.5rem .85rem}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .btn-submit,.btn-submit::before,.people-options label,.chips label,.form-success.show{transition:none;animation:none}
+      .btn-submit .spinner{animation:none}
+    }
+
+    /* 10. Footer – profesional con marca, navegación y barra inferior */
+    footer.site{position:relative;background:var(--ink);color:var(--white);padding:0;font-size:.95rem;overflow:hidden}
+    footer.site::before{content:"";position:absolute;top:-170px;left:-120px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(15,106,99,.4) 0%,transparent 70%);pointer-events:none}
+    footer.site::after{content:"";position:absolute;bottom:-190px;right:-130px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(245,184,61,.16) 0%,transparent 70%);pointer-events:none}
+    footer.site .wrap{position:relative;z-index:1}
+    .foot-main{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3.5rem;padding:4.5rem 0 3.5rem}
+    .foot-brand{max-width:380px}
+    .foot-logo{display:inline-flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--white);font:800 1.5rem 'Bricolage Grotesque',sans-serif;letter-spacing:-.025em;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    .foot-logo:hover{transform:translateY(-1px)}
+    .foot-logo:focus-visible{outline:none}
+    .foot-logo:focus-visible .foot-mark{box-shadow:0 0 0 3px var(--ink),0 0 0 6px var(--sun)}
+    .foot-mark{position:relative;width:44px;height:44px;border-radius:14px;flex:none;overflow:hidden;background:linear-gradient(150deg,var(--teal) 0%,var(--teal-dark) 100%);box-shadow:0 10px 24px -10px rgba(15,106,99,.9),inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 18px -13px rgba(20,33,61,.65);transition:transform .6s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease}
+    .foot-logo:hover .foot-mark{transform:rotate(-6deg) scale(1.07);box-shadow:0 14px 30px -10px rgba(15,106,99,.95),inset 0 1px 0 rgba(255,255,255,.45)}
+    .foot-mark::before{content:"";position:absolute;left:50%;top:50%;width:27px;height:27px;transform:translate(-50%,-50%);border-radius:50%;background:conic-gradient(var(--white) 0deg 100deg,transparent 100deg 106deg,var(--sun) 106deg 166deg,transparent 166deg 172deg,rgba(255,255,255,.5) 172deg 354deg,transparent 354deg 360deg);-webkit-mask:radial-gradient(farthest-side,transparent 45%,#000 47%);mask:radial-gradient(farthest-side,transparent 45%,#000 47%);transition:transform .9s cubic-bezier(.34,1.4,.5,1)}
+    .foot-logo:hover .foot-mark::before{transform:translate(-50%,-50%) rotate(168deg)}
+    .foot-mark::after{content:"";position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;transform:translate(-50%,-50%);background:var(--sun);box-shadow:0 0 0 3px rgba(15,106,99,.9);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+    .foot-logo:hover .foot-mark::after{transform:translate(-50%,-50%) scale(1.25)}
+    .foot-word{white-space:nowrap}
+    .foot-word span{color:var(--sun)}
+    .foot-desc{margin-top:1.2rem;color:rgba(255,255,255,.68);font-size:.95rem;line-height:1.75;max-width:34ch}
+    .foot-col h4{font:700 .78rem 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1.2rem}
+    .foot-col a{position:relative;display:block;width:fit-content;color:rgba(255,255,255,.78);text-decoration:none;padding:.34rem 0;font-size:.95rem;transition:color .25s ease,transform .25s ease}
+    .foot-col a::before{content:"";position:absolute;left:-14px;top:50%;width:6px;height:6px;border-radius:50%;background:var(--sun);transform:translateY(-50%) scale(0);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+    .foot-col a:hover{color:var(--sun);transform:translateX(5px)}
+    .foot-col a:hover::before{transform:translateY(-50%) scale(1)}
+    .foot-col a:focus-visible{outline:none;color:var(--sun);box-shadow:0 0 0 2px rgba(245,184,61,.6);border-radius:4px}
+    .foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;padding:1.5rem 0;border-top:1px solid rgba(255,255,255,.1);font-size:.85rem;color:rgba(255,255,255,.55)}
+    .foot-bottom span{letter-spacing:.01em}
+    .foot-top{display:inline-flex;align-items:center;gap:.5rem;color:rgba(255,255,255,.78);text-decoration:none;padding:.5rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.03);transition:color .25s ease,background .25s ease,border-color .25s ease,transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease}
+    .foot-top svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    .foot-top:hover{color:var(--ink);background:var(--sun);border-color:var(--sun);transform:translateY(-2px);box-shadow:0 10px 22px -10px rgba(245,184,61,.8)}
+    .foot-top:hover svg{transform:translateY(-2px)}
+    .foot-top:active{transform:scale(.97)}
+    .foot-top:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ink),0 0 0 6px var(--sun)}
+    @media(max-width:860px){
+      .foot-main{grid-template-columns:1fr 1fr;gap:2.5rem;padding:3.5rem 0 2.5rem}
+      .foot-brand{grid-column:1 / -1;max-width:none}
+    }
+    @media(max-width:560px){
+      .foot-main{grid-template-columns:1fr;gap:2.2rem;padding:3rem 0 2.2rem}
+      .foot-bottom{flex-direction:column;align-items:flex-start;gap:1rem}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .foot-logo,.foot-mark,.foot-mark::before,.foot-mark::after,.foot-col a,.foot-col a::before,.foot-top,.foot-top svg{transition:none;animation:none}
+    }
+
+    /* === 11. Switch de tema (sol ⇄ luna) === */
+    .nav-right{display:flex;align-items:center;gap:.55rem;min-width:0}
+    .theme-switch{position:relative;flex:none;width:68px;height:36px;border-radius:999px;cursor:pointer;border:1px solid rgba(20,33,61,.16);background:#c6dad5;display:inline-flex;align-items:center;justify-content:space-between;padding:0 6px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(20,33,61,.18);transition:background .4s ease,border-color .4s ease,box-shadow .4s ease}
+    .theme-switch:hover{border-color:var(--teal)}
+    .theme-switch:focus-visible{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--sun)}
+    .theme-icon{position:relative;z-index:2;display:grid;place-items:center;width:22px;height:22px;transition:opacity .35s ease,color .35s ease,transform .45s cubic-bezier(.34,1.56,.64,1)}
+    .theme-icon svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .theme-sun{color:#d99a1f}
+    .theme-moon{color:rgba(20,33,61,.45)}
+    .theme-thumb{position:absolute;top:3px;left:3px;width:28px;height:28px;border-radius:50%;z-index:1;background:var(--white);box-shadow:0 2px 7px rgba(20,33,61,.45),inset 0 1px 0 rgba(255,255,255,.9);transition:transform .45s cubic-bezier(.34,1.56,.64,1),background .4s ease,box-shadow .4s ease}
+    /* Modo oscuro activo: el thumb se desliza hacia la luna */
+    .theme-switch[aria-checked="true"]{background:#0c1729;border-color:rgba(255,255,255,.16);box-shadow:inset 0 1px 3px rgba(0,0,0,.65)}
+    .theme-switch[aria-checked="true"] .theme-thumb{transform:translateX(32px);background:#eef5f4;box-shadow:0 2px 8px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.9)}
+    .theme-switch[aria-checked="true"] .theme-sun{opacity:.42;color:rgba(233,241,240,.55)}
+    .theme-switch[aria-checked="true"] .theme-moon{opacity:1;color:#cf9414;transform:rotate(-16deg)}
+
+    /* === 12. MODO OSCURO === */
+    :root[data-theme="dark"]{
+      --mist:#0a1020;
+      --line:#25365a;
+      --surface:#101b31;
+      --surface-2:#172640;
+      --text:#e9f1f0;
+      --text-2:rgba(233,241,240,.74);
+      --text-3:rgba(233,241,240,.5);
+      --accent-soft:#7fe3d3;
+      color-scheme:dark;
+    }
+    [data-theme="dark"] body{color:var(--text);transition:background-color .35s ease,color .35s ease}
+    [data-theme="dark"] ::selection{background:rgba(45,212,191,.3);color:var(--white)}
+    [data-theme="dark"] .hero::before{background:radial-gradient(circle,rgba(45,212,191,.11) 0%,transparent 70%)}
+
+    /* Header / navbar */
+    [data-theme="dark"] .nav{background:rgba(16,27,49,.72);border-color:rgba(37,54,90,.9);box-shadow:0 16px 48px -22px rgba(0,0,0,.8),0 6px 20px -10px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05)}
+    [data-theme="dark"] header.scrolled .nav{background:rgba(16,27,49,.9);border-color:rgba(37,54,90,.95);box-shadow:0 22px 56px -24px rgba(0,0,0,.85),0 8px 24px -12px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06)}
+    [data-theme="dark"] header.compact .nav{background:rgba(16,27,49,.96)}
+    [data-theme="dark"] .logo,[data-theme="dark"] nav a{color:var(--text)}
+    [data-theme="dark"] .logo-accent{color:var(--accent-soft)}
+    [data-theme="dark"] nav a:hover{color:var(--accent-soft);background:rgba(45,212,191,.14);box-shadow:0 8px 18px -8px rgba(0,0,0,.5)}
+    [data-theme="dark"] nav a.section-link::after{background:var(--accent-soft)}
+    [data-theme="dark"] nav a.section-link.active{color:var(--accent-soft)}
+    [data-theme="dark"] nav a.section-link[data-section="faq"].active::after{background:var(--text);box-shadow:0 0 8px rgba(233,241,240,.7)}
+    [data-theme="dark"] .nav-toggle{box-shadow:inset 0 0 0 1.5px rgba(233,241,240,.22)}
+    [data-theme="dark"] .nav-toggle:hover{background:rgba(233,241,240,.08);box-shadow:inset 0 0 0 1.5px rgba(233,241,240,.38),0 8px 20px -8px rgba(0,0,0,.6)}
+    [data-theme="dark"] .nav-toggle span{background:var(--text)}
+    [data-theme="dark"] .nav-toggle[aria-expanded="true"] span:nth-child(1),[data-theme="dark"] .nav-toggle[aria-expanded="true"] span:nth-child(3){background:var(--accent-soft)}
+    [data-theme="dark"] .nav-toggle:focus-visible{box-shadow:inset 0 0 0 1.5px var(--text),0 0 0 3px var(--mist),0 0 0 5px var(--sun)}
+    @media(max-width:860px){
+      [data-theme="dark"] nav ul{background:rgba(16,27,49,.98);border-color:var(--line);box-shadow:0 34px 70px -30px rgba(0,0,0,.85),0 10px 30px -14px rgba(0,0,0,.55)}
+      [data-theme="dark"] nav a.section-link::after{border-color:rgba(233,241,240,.3)}
+      [data-theme="dark"] nav a.section-link.active{background:rgba(45,212,191,.14)}
+      [data-theme="dark"] nav a.section-link.active::after{background:var(--accent-soft);border-color:var(--accent-soft);box-shadow:0 0 12px rgba(45,212,191,.6)}
+    }
+
+    /* Hero */
+    [data-theme="dark"] .btn-hero-secondary{color:var(--text);border-color:rgba(233,241,240,.22)}
+    [data-theme="dark"] .btn-hero-secondary:hover{border-color:var(--accent-soft);background:rgba(45,212,191,.1)}
+    [data-theme="dark"] .demo{box-shadow:0 32px 64px -28px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06)}
+
+    /* Beneficios */
+    [data-theme="dark"] .benefits-section::before{background:linear-gradient(90deg,transparent 0%,rgba(45,212,191,.16) 20%,rgba(45,212,191,.16) 80%,transparent 100%)}
+    [data-theme="dark"] .benefit{background:rgba(22,35,61,.62);border-color:rgba(37,54,90,.8)}
+    [data-theme="dark"] .benefit:hover{box-shadow:0 28px 56px -20px rgba(0,0,0,.6),0 8px 24px -12px rgba(0,0,0,.4);border-color:var(--accent)}
+    [data-theme="dark"] .benefit h3{color:var(--text)}
+    [data-theme="dark"] .benefit p{color:var(--text-2)}
+    [data-theme="dark"] .benefit:hover p{color:rgba(233,241,240,.92)}
+    [data-theme="dark"] .benefit-icon{box-shadow:0 8px 24px -8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04)}
+    [data-theme="dark"] .benefit:nth-child(3){--accent:#9db8ff}
+    [data-theme="dark"] .benefit:nth-child(3) .benefit-icon{background:linear-gradient(135deg,rgba(157,184,255,.16) 0%,rgba(157,184,255,.04) 100%);border-color:rgba(157,184,255,.28)}
+
+    /* Cómo funciona */
+    [data-theme="dark"] .steps::before{background:var(--line)}
+    [data-theme="dark"] .step-node{background:linear-gradient(145deg,#172640 0%,#101b31 100%);box-shadow:0 12px 32px -8px rgba(0,0,0,.5),0 4px 16px -4px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)}
+    [data-theme="dark"] .step:hover .step-node{box-shadow:0 20px 48px -12px rgba(0,0,0,.65),0 8px 24px -8px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.07)}
+    [data-theme="dark"] .step h3{color:var(--text)}
+    [data-theme="dark"] .step p{color:var(--text-2)}
+    [data-theme="dark"] .step:hover p{color:rgba(233,241,240,.9)}
+    [data-theme="dark"] .step:nth-child(1){--step-color:#2dd4bf;--step-rgb:45,212,191;--step-glow:rgba(45,212,191,.35)}
+    [data-theme="dark"] .step:nth-child(3){--step-color:#9db8ff;--step-rgb:157,184,255;--step-glow:rgba(157,184,255,.35)}
+    [data-theme="dark"] .step-number{color:var(--ink)}
+
+    /* Testimonios */
+    [data-theme="dark"] #testimonios{background:var(--mist)!important}
+    [data-theme="dark"] blockquote.quote{background:linear-gradient(160deg,var(--surface) 0%,#0e1830 100%);border-color:var(--line);box-shadow:0 12px 32px -18px rgba(0,0,0,.6),0 2px 8px -4px rgba(0,0,0,.35)}
+    [data-theme="dark"] blockquote.quote:hover{border-color:var(--accent-soft);box-shadow:0 24px 48px -20px rgba(0,0,0,.65),0 6px 18px -8px rgba(0,0,0,.4)}
+    [data-theme="dark"] blockquote.quote::before{color:rgba(233,241,240,.06)}
+    [data-theme="dark"] .quote-body{color:rgba(233,241,240,.88)}
+    [data-theme="dark"] .quote-name{color:var(--text)}
+    [data-theme="dark"] .quote-name .verified{color:var(--accent-soft)}
+    [data-theme="dark"] .quote-role{color:rgba(233,241,240,.6)}
+    [data-theme="dark"] .quote-role .dot{background:rgba(233,241,240,.28)}
+    [data-theme="dark"] .quote-person{border-top-color:var(--line)}
+    [data-theme="dark"] .quote-avatar::after{border-color:var(--surface)}
+    [data-theme="dark"] .quote-tag{color:var(--accent-soft);background:rgba(45,212,191,.14)}
+
+    /* FAQ */
+    [data-theme="dark"] .faq details{background:var(--surface);border-color:var(--line)}
+    [data-theme="dark"] .faq details:hover{border-color:rgba(45,212,191,.45);box-shadow:0 14px 32px -20px rgba(0,0,0,.6)}
+    [data-theme="dark"] .faq details[open]{border-color:#2dd4bf;box-shadow:0 20px 44px -24px rgba(0,0,0,.7);background:linear-gradient(180deg,var(--surface) 0%,#0d1830 100%)}
+    [data-theme="dark"] .faq summary{color:var(--text)}
+    [data-theme="dark"] .faq summary:hover{background:rgba(45,212,191,.07)}
+    [data-theme="dark"] .faq details[open] summary{color:var(--accent-soft)}
+    [data-theme="dark"] .faq-icon{background:var(--surface-2);color:var(--accent-soft)}
+    [data-theme="dark"] .faq summary::after{background:var(--surface-2);color:var(--accent-soft)}
+    [data-theme="dark"] .faq details p{color:var(--text-2)}
+    [data-theme="dark"] .faq summary:focus-visible{box-shadow:inset 0 0 0 2px var(--accent-soft)}
+
+    /* Pre-footer / formulario */
+    [data-theme="dark"] .prefooter{background:linear-gradient(180deg,var(--mist) 0%,#070c17 100%);--danger:#ff6b5e}
+    [data-theme="dark"] .prefooter::before{background:radial-gradient(circle,rgba(45,212,191,.16) 0%,transparent 68%)}
+    [data-theme="dark"] .prefooter::after{background:radial-gradient(circle,rgba(245,184,61,.12) 0%,transparent 70%)}
+    [data-theme="dark"] .prefooter-copy p{color:var(--text-2)}
+    [data-theme="dark"] .trust-list li{color:rgba(233,241,240,.88)}
+    [data-theme="dark"] .trust-list li svg{color:var(--accent-soft);background:rgba(45,212,191,.14)}
+    [data-theme="dark"] .form-box{background:var(--surface);border-color:var(--line);box-shadow:0 48px 90px -46px rgba(0,0,0,.85),0 18px 40px -24px rgba(0,0,0,.6)}
+    [data-theme="dark"] .form-head{border-bottom-color:var(--line)}
+    [data-theme="dark"] .form-head-title{color:var(--text)}
+    [data-theme="dark"] .form-head-pill{color:var(--accent-soft);background:rgba(45,212,191,.14)}
+    [data-theme="dark"] .field .label,[data-theme="dark"] .field legend{color:var(--text)}
+    [data-theme="dark"] .field .label .req{color:var(--accent-soft)}
+    [data-theme="dark"] .field .label .opt{color:var(--text-3)}
+    [data-theme="dark"] .field input[type=text],[data-theme="dark"] .field input[type=email],[data-theme="dark"] .field input[type=tel]{background:var(--surface-2);color:var(--text)}
+    [data-theme="dark"] .field input::placeholder{color:rgba(233,241,240,.4)}
+    [data-theme="dark"] .field input:hover{background:#1c2d4d}
+    [data-theme="dark"] .field input:focus{background:#0d1830;border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.22)}
+    [data-theme="dark"] .field.invalid input{border-color:#ff6b5e;background:#0d1830;box-shadow:0 0 0 3px rgba(255,107,94,.16)}
+    [data-theme="dark"] .field-error{color:#ff8b80}
+    [data-theme="dark"] .people-options label,[data-theme="dark"] .chips label{background:var(--surface-2);color:var(--text)}
+    [data-theme="dark"] .people-options label:hover,[data-theme="dark"] .chips label:hover{border-color:var(--accent-soft)}
+    [data-theme="dark"] .people-options input:checked + label{background:#0f8a7d;border-color:#0f8a7d;color:var(--white)}
+    [data-theme="dark"] .consent{color:rgba(233,241,240,.75)}
+    [data-theme="dark"] .consent a{color:var(--accent-soft)}
+    [data-theme="dark"] .form-note{color:rgba(233,241,240,.5)}
+    [data-theme="dark"] .form-status.error{background:rgba(255,107,94,.12);color:#ffb0a8}
+    [data-theme="dark"] .form-success h3{color:var(--text)}
+    [data-theme="dark"] .form-success p{color:var(--text-2)}
+    [data-theme="dark"] .form-success strong{color:var(--accent-soft)}
+
+    /* Footer */
+    [data-theme="dark"] footer.site{background:#0b1424}
+
+    @media(prefers-reduced-motion:reduce){
+      .theme-thumb,.theme-icon,.theme-switch{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <!-- ============ 2) PEGA AQUÍ EL <noscript> DE GTM (justo después de abrir <body>) ============ -->
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- ===== SECCIÓN 1: HEADER ===== -->
+  <header>
+    <div class="wrap nav">
+      <a class="logo" href="#inicio" aria-label="Cuenta Clara - Inicio">
+        <span class="logo-mark" aria-hidden="true"></span>
+        <span class="logo-text">Cuenta <span class="logo-accent">Clara</span></span>
+      </a>
+      <div class="nav-right">
+        <nav aria-label="Principal">
+          <ul id="nav-list">
+            <li><a class="section-link" data-section="beneficios" href="#beneficios">Beneficios</a></li>
+            <li><a class="section-link" data-section="como-funciona" href="#como-funciona">Cómo funciona</a></li>
+            <li><a class="section-link" data-section="faq" href="#faq">Preguntas</a></li>
+            <li><a id="btn-nav-cta" class="btn btn-primary nav-cta" href="#registro">Unirme</a></li>
+          </ul>
+        </nav>
+        <button class="theme-switch" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Activar modo oscuro">
+          <span class="theme-icon theme-sun" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.6" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.4"/><line x1="4.1" y1="4.1" x2="5.8" y2="5.8"/><line x1="18.2" y1="18.2" x2="19.9" y2="19.9"/><line x1="1.6" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.4" y2="12"/><line x1="4.1" y1="19.9" x2="5.8" y2="18.2"/><line x1="18.2" y1="5.8" x2="19.9" y2="4.1"/></svg></span>
+          <span class="theme-icon theme-moon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+          <span class="theme-thumb" aria-hidden="true"></span>
+        </button>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Abrir menú" aria-controls="nav-list" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <!-- ===== SECCIÓN 2: HERO ===== -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1>Los gastos de la casa, repartidos sin discusiones.</h1>
+          <p class="lead">Cuenta Clara es la app que divide el arriendo, los servicios y el mercado entre quienes viven contigo, y te avisa quién debe qué.</p>
+          <div class="hero-actions">
+            <a id="btn-cta-principal" class="btn-hero-primary" href="#registro">Unirme a la lista de espera</a>
+            <a class="btn-hero-secondary" href="#como-funciona">Ver cómo funciona</a>
+          </div>
+          <small>Gratis durante el lanzamiento. Sin tarjeta.</small>
+        </div>
+
+        <!-- Demo: calcula cuánto paga cada uno -->
+        <div class="demo" aria-label="Calculadora de ejemplo" role="region" aria-live="polite">
+          <h3>Pruébalo: ¿cuánto paga cada uno?</h3>
+          
+          <div class="demo-field">
+            <label for="total">Total de la cuenta (COP) <span id="totalDisplay">$480.000</span></label>
+            <input id="total" type="number" min="0" step="1000" value="480000" aria-label="Total de la cuenta en pesos colombianos">
+          </div>
+
+          <div class="demo-field">
+            <label for="personas">Personas en la casa <span id="personasTxt">4</span></label>
+            <input id="personas" type="range" min="2" max="8" value="4" aria-label="Número de personas en la casa">
+          </div>
+
+          <!-- Visualización del reparto con anillos -->
+          <div class="split-visual" id="splitVisual" aria-hidden="true"></div>
+
+          <!-- Resultado -->
+          <div class="result">
+            <span class="result-label">Cada persona paga</span>
+            <strong class="result-value" id="porPersona">$120.000</strong>
+            <span class="result-per-person" id="perPersonDetail">Repartido entre 4 personas</span>
+          </div>
+
+          <!-- Presets rápidos -->
+          <div class="demo-presets" role="group" aria-label="Ejemplos rápidos">
+            <button type="button" class="demo-preset" data-total="450000" data-people="3" aria-label="Arriendo típico 3 personas">Arriendo</button>
+            <button type="button" class="demo-preset" data-total="180000" data-people="4" aria-label="Servicios típicos 4 personas">Servicios</button>
+            <button type="button" class="demo-preset" data-total="320000" data-people="4" aria-label="Mercado semanal 4 personas">Mercado</button>
+            <button type="button" class="demo-preset" data-total="950000" data-people="5" aria-label="Gastos completos 5 personas">Todo junto</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECCIÓN 3: BENEFICIOS ===== -->
+    <section id="beneficios" class="beneficios-section">
+      <div class="wrap">
+        <h2>Menos cuentas mentales, más tranquilidad</h2>
+        <div class="benefits-grid">
+          <article class="benefit">
+            <div class="benefit-inner">
+              <div class="benefit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                  <path d="M12 6v6l4 4"/>
+                  <circle cx="12" cy="12" r="10" stroke-dasharray="62.8" stroke-dashoffset="15.7"/>
+                </svg>
+              </div>
+              <h3>Cada peso en su lugar</h3>
+              <p>Registra un gasto en segundos y la app calcula la parte de cada persona, incluso si no todos pagan lo mismo.</p>
+              <span class="benefit-metric">+98% precisión</span>
+            </div>
+          </article>
+          <article class="benefit">
+            <div class="benefit-inner">
+              <div class="benefit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                  <line x1="12" y1="6" x2="12" y2="14" stroke-dasharray="8" stroke-dashoffset="2"/>
+                </svg>
+              </div>
+              <h3>Recordatorios amables</h3>
+              <p>Cuando alguien se atrasa, Cuenta Clara envía el aviso por ti. Tú no tienes que cobrarle a nadie.</p>
+              <span class="benefit-metric">-73% conflictos</span>
+            </div>
+          </article>
+          <article class="benefit">
+            <div class="benefit-inner">
+              <div class="benefit-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="16" rx="2"/>
+                  <path d="M9 8h6M9 12h6M9 16h4"/>
+                  <line x1="12" y1="4" x2="12" y2="20" stroke-dasharray="16" stroke-dashoffset="4"/>
+                </svg>
+              </div>
+              <h3>Todo el historial a la vista</h3>
+              <p>Consulta quién pagó qué y cuándo. Se acabó el “yo creí que ya lo habías pagado”.</p>
+              <span class="benefit-metric">100% trazable</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECCIÓN 4: CTA ===== -->
+    <section class="cta-band">
+      <div class="wrap">
+        <h2>Sé de los primeros en usarla</h2>
+        <p>Estamos abriendo cupos por grupos de casa. Reserva el tuyo hoy.</p>
+        <div class="cta-actions">
+          <a id="btn-cta-secundario" class="btn-cta" href="#registro">Reservar mi cupo</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECCIÓN 5: EXPLICACIÓN ===== -->
+    <section id="como-funciona" class="como-funciona">
+      <div class="wrap">
+        <h2>Cómo funciona</h2>
+        <p>Tres pasos y tu casa queda al día.</p>
+        <div class="steps">
+          <article class="step">
+            <div class="step-node" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div class="step-content">
+              <span class="step-number">1</span>
+              <h3>Crea tu casa</h3>
+              <p>Invita a tus compañeros con un enlace. No necesitan configurar nada.</p>
+              <a class="step-cta" href="#registro">Empezar ahora <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </article>
+          <article class="step">
+            <div class="step-node" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="M21 15l-5-5L5 17"/>
+              </svg>
+            </div>
+            <div class="step-content">
+              <span class="step-number">2</span>
+              <h3>Anota los gastos</h3>
+              <p>Toma foto al recibo o escribe el valor. Elige entre dividir en partes iguales o por porcentaje.</p>
+              <a class="step-cta" href="#demo">Probar calculadora <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </article>
+          <article class="step">
+            <div class="step-node" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <div class="step-content">
+              <span class="step-number">3</span>
+              <h3>Salden cuentas</h3>
+              <p>La app muestra la forma más simple de quedar a mano, con el menor número de pagos posibles.</p>
+              <a class="step-cta" href="#registro">Unirse a la lista <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECCIÓN 6: TESTIMONIOS ===== -->
+    <section id="testimonios" style="background:var(--white)">
+      <div class="wrap">
+        <h2>Lo que dicen los primeros grupos</h2>
+        <div class="quotes">
+          <blockquote class="quote">
+            <span class="quote-tag"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Arriendo + servicios</span>
+            <div class="quote-rating" role="img" aria-label="5 de 5 estrellas">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote-body">“Antes lo llevábamos en una hoja de cálculo que nadie actualizaba. Ahora cada uno ve su parte al instante.”</p>
+            <div class="quote-person">
+              <span class="quote-avatar" aria-hidden="true">LM</span>
+              <span class="quote-meta">
+                <span class="quote-name">Laura M.
+                  <span class="verified" title="Usuario verificado"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="M7.5 12.5l3 3 6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </span>
+                <span class="quote-role">Vive con 3 personas <span class="dot"></span> Bogotá</span>
+              </span>
+            </div>
+          </blockquote>
+          <blockquote class="quote">
+            <span class="quote-tag"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Gastos del mes</span>
+            <div class="quote-rating" role="img" aria-label="5 de 5 estrellas">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote-body">“Lo mejor es que la app cobra por mí. Dejé de sentirme el policía de la casa.”</p>
+            <div class="quote-person">
+              <span class="quote-avatar" aria-hidden="true">AR</span>
+              <span class="quote-meta">
+                <span class="quote-name">Andrés R.
+                  <span class="verified" title="Usuario verificado"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="M7.5 12.5l3 3 6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </span>
+                <span class="quote-role">Estudiante de ingeniería <span class="dot"></span> Medellín</span>
+              </span>
+            </div>
+          </blockquote>
+          <blockquote class="quote">
+            <span class="quote-tag"><svg viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>Mercado y arriendo</span>
+            <div class="quote-rating" role="img" aria-label="5 de 5 estrellas">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="quote-body">“Armamos el grupo en dos minutos y el primer mes cuadramos todo con tres transferencias.”</p>
+            <div class="quote-person">
+              <span class="quote-avatar" aria-hidden="true">CP</span>
+              <span class="quote-meta">
+                <span class="quote-name">Camila P.
+                  <span class="verified" title="Usuario verificado"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="M7.5 12.5l3 3 6-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </span>
+                <span class="quote-role">Diseñadora freelance <span class="dot"></span> Cali</span>
+              </span>
+            </div>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECCIÓN 7: CTA 2 ===== -->
+    <section class="cta-band dark">
+      <div class="wrap">
+        <h2>Tu próximo mes puede ser más claro</h2>
+        <p>Déjanos tu correo y te escribimos cuando abramos tu cupo.</p>
+        <a id="btn-cta-2" class="btn btn-sun" href="#registro">Quiero mi acceso</a>
+      </div>
+    </section>
+
+    <!-- ===== SECCIÓN 8: FAQ ===== -->
+    <section id="faq">
+      <div class="wrap">
+        <h2>Preguntas frecuentes</h2>
+        <div class="faq">
+          <details>
+            <summary>
+              <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg></span>
+              <span class="faq-q">¿Tiene costo?</span>
+            </summary>
+            <p>Durante el lanzamiento es gratis. Si más adelante hay un plan de pago, te avisaremos antes y tu grupo conservará el acceso básico.</p>
+          </details>
+          <details>
+            <summary>
+              <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+              <span class="faq-q">¿Mis compañeros también deben registrarse?</span>
+            </summary>
+            <p>Sí, pero solo necesitan abrir el enlace de invitación y poner su nombre.</p>
+          </details>
+          <details>
+            <summary>
+              <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
+              <span class="faq-q">¿Funciona para parejas o viajes?</span>
+            </summary>
+            <p>Sí. Puedes crear grupos para la casa, un viaje o cualquier gasto compartido.</p>
+          </details>
+          <details>
+            <summary>
+              <span class="faq-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
+              <span class="faq-q">¿Qué hacen con mis datos?</span>
+            </summary>
+            <p>Usamos tus datos de contacto y los de tu grupo solo para avisarte sobre la app y organizar los cupos. No los vendemos ni los compartimos.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECCIÓN 9: PRE-FOOTER (formulario conectado a HubSpot CRM) ===== -->
+    <section class="prefooter" id="registro">
+      <div class="wrap form-grid">
+        <div class="prefooter-copy">
+          <h2>Únete a la lista de espera</h2>
+          <p>Déjanos tus datos y te avisamos apenas abramos cupos para tu grupo.</p>
+          <ul class="trust-list">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Gratis durante el lanzamiento</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Sin tarjeta ni compromiso</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Te escribimos solo cuando abramos cupos</li>
+          </ul>
+        </div>
+        <div class="form-box">
+          <div class="form-head">
+            <span class="form-head-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
+            <span class="form-head-title">Reserva tu acceso anticipado</span>
+            <span class="form-head-pill">Gratis</span>
+          </div>
+          <form class="waitlist-form" id="waitlist-form" novalidate>
+            <div class="field" id="field-nombre">
+              <label class="label" for="wl-nombre">Nombre <span class="req">*</span></label>
+              <input id="wl-nombre" name="nombre" type="text" autocomplete="name" placeholder="Ej. Laura Gómez" required aria-describedby="err-nombre">
+              <span class="field-error" id="err-nombre">Escribe tu nombre.</span>
+            </div>
+
+            <div class="field" id="field-correo">
+              <label class="label" for="wl-correo">Correo <span class="req">*</span></label>
+              <input id="wl-correo" name="correo" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com" required aria-describedby="err-correo">
+              <span class="field-error" id="err-correo">Escribe un correo válido.</span>
+            </div>
+
+            <div class="field" id="field-ciudad">
+              <label class="label" for="wl-ciudad">Ciudad <span class="req">*</span></label>
+              <input id="wl-ciudad" name="ciudad" type="text" autocomplete="address-level2" list="ciudades-co" placeholder="Ej. Bogotá" required aria-describedby="err-ciudad">
+              <datalist id="ciudades-co">
+                <option value="Bogotá"></option>
+                <option value="Medellín"></option>
+                <option value="Cali"></option>
+                <option value="Barranquilla"></option>
+                <option value="Cartagena"></option>
+                <option value="Bucaramanga"></option>
+                <option value="Pereira"></option>
+                <option value="Manizales"></option>
+                <option value="Santa Marta"></option>
+                <option value="Cúcuta"></option>
+                <option value="Ibagué"></option>
+                <option value="Villavicencio"></option>
+                <option value="Pasto"></option>
+                <option value="Montería"></option>
+                <option value="Neiva"></option>
+                <option value="Armenia"></option>
+                <option value="Valledupar"></option>
+                <option value="Sincelejo"></option>
+                <option value="Popayán"></option>
+                <option value="Tunja"></option>
+              </datalist>
+              <span class="field-error" id="err-ciudad">Escribe tu ciudad.</span>
+            </div>
+
+            <fieldset class="field" id="field-personas">
+              <legend class="label">¿Con cuántas personas vives? <span class="req">*</span></legend>
+              <div class="people-options">
+                <input type="radio" name="personas" id="wl-p1" value="1"><label for="wl-p1">1</label>
+                <input type="radio" name="personas" id="wl-p2" value="2"><label for="wl-p2">2</label>
+                <input type="radio" name="personas" id="wl-p3" value="3"><label for="wl-p3">3</label>
+                <input type="radio" name="personas" id="wl-p4" value="4"><label for="wl-p4">4</label>
+                <input type="radio" name="personas" id="wl-p5" value="5+"><label for="wl-p5">5 o más</label>
+              </div>
+              <span class="field-error" id="err-personas">Elige cuántas personas viven contigo.</span>
+            </fieldset>
+
+            <div class="field">
+              <span class="label">¿Qué quieres repartir? <span class="opt">(opcional)</span></span>
+              <div class="chips">
+                <input type="checkbox" name="gastos" id="wl-g-arriendo" value="Arriendo"><label for="wl-g-arriendo">Arriendo</label>
+                <input type="checkbox" name="gastos" id="wl-g-servicios" value="Servicios"><label for="wl-g-servicios">Servicios</label>
+                <input type="checkbox" name="gastos" id="wl-g-mercado" value="Mercado"><label for="wl-g-mercado">Mercado</label>
+                <input type="checkbox" name="gastos" id="wl-g-viajes" value="Viajes"><label for="wl-g-viajes">Viajes</label>
+              </div>
+            </div>
+
+            <div class="hp-field" aria-hidden="true">
+              <label for="wl-empresa">No completar</label>
+              <input id="wl-empresa" name="empresa" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
+            <label class="consent" id="field-consent">
+              <input type="checkbox" name="consent" id="wl-consent" required>
+              <span>Acepto el <a href="#faq">tratamiento de mis datos</a> para que Cuenta Clara me contacte sobre la app.</span>
+            </label>
+
+            <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+
+            <button class="btn-submit" type="submit" id="wl-submit">
+              <span class="spinner" aria-hidden="true"></span>
+              <span>Reservar mi cupo</span>
+            </button>
+            <p class="form-note">Sin costo durante el lanzamiento. No compartimos tus datos.</p>
+          </form>
+
+          <div class="form-success" id="form-success" role="status" aria-live="polite">
+            <div class="check" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h3>¡Listo, ya estás en la lista!</h3>
+            <p>Te escribiremos a <strong id="success-email">tu correo</strong> apenas abramos cupos para tu grupo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== SECCIÓN 10: FOOTER ===== -->
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-main">
+        <div class="foot-brand">
+          <a class="foot-logo" href="#inicio" aria-label="Cuenta Clara - Inicio">
+            <span class="foot-mark" aria-hidden="true"></span>
+            <span class="foot-word">Cuenta <span>Clara</span></span>
+          </a>
+          <p class="foot-desc">Los gastos de la casa, repartidos sin discusiones.</p>
+        </div>
+        <nav class="foot-col" aria-label="Explorar">
+          <h4>Explorar</h4>
+          <a href="#beneficios">Beneficios</a>
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#faq">Preguntas frecuentes</a>
+        </nav>
+        <div class="foot-col">
+          <h4>Contacto</h4>
+          <a href="mailto:hola@cuentaclara.example">hola@cuentaclara.example</a>
+          <a href="#registro">Unirme a la lista</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Cuenta Clara. Proyecto académico.</span>
+        <a class="foot-top" href="#inicio">Volver arriba <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Demo del hero – calculadora interactiva con anillos visuales
+    (function(){
+      var total     = document.getElementById('total');
+      var totalDisp = document.getElementById('totalDisplay');
+      var pers      = document.getElementById('personas');
+      var txt       = document.getElementById('personasTxt');
+      var out       = document.getElementById('porPersona');
+      var detail    = document.getElementById('perPersonDetail');
+      var splitVis  = document.getElementById('splitVisual');
+      if(!total || !pers || !splitVis) return;
+
+      var R = 28;             // radio del anillo
+      var circ = 2 * Math.PI * R; // ~176
+
+      function fmt(n){ return '$' + Math.round(n).toLocaleString('es-CO'); }
+      function fmtRaw(n){ return Math.round(n).toLocaleString('es-CO'); }
+
+      function renderRings(p){
+        splitVis.innerHTML = '';
+        for(var i=0;i<p;i++){
+          var ring = document.createElement('div');
+          ring.className = 'split-ring';
+          ring.style.setProperty('--i', i);
+          ring.innerHTML = '<svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="'+R+'"/><circle class="fg" cx="32" cy="32" r="'+R+'" style="stroke-dasharray:'+circ+';stroke-dashoffset:'+circ+'"/></svg><span>1/'+p+'</span>';
+          splitVis.appendChild(ring);
+          // animar entrada escalonada
+          requestAnimationFrame(function(){
+            var fg = ring.querySelector('.fg');
+            fg.style.strokeDashoffset = '0';
+          });
+        }
+      }
+
+      function calc(){
+        var t = parseFloat(total.value) || 0;
+        var p = parseInt(pers.value, 10);
+        txt.textContent = p;
+        totalDisp.textContent = '$' + fmtRaw(t);
+        var each = t / p;
+        out.textContent = fmt(each);
+        detail.textContent = 'Repartido entre ' + p + ' ' + (p===1?'persona':'personas');
+        out.classList.add('updating');
+        setTimeout(function(){ out.classList.remove('updating'); }, 300);
+        renderRings(p);
+      }
+
+      total.addEventListener('input', calc);
+      pers.addEventListener('input', calc);
+
+      // Presets
+      document.querySelectorAll('.demo-preset').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var t = parseInt(btn.dataset.total,10);
+          var p = parseInt(btn.dataset.people,10);
+          total.value = t;
+          pers.value = p;
+          calc();
+        });
+      });
+
+      calc();
+    })();
+
+    // ===== Formulario de lista de espera → HubSpot CRM =====
+    (function(){
+      var form = document.getElementById('waitlist-form');
+      if(!form) return;
+
+      /* ─────────────────────────────────────────────────────────────
+         CONFIGURA TU HUBSPOT AQUÍ:
+         1) Reemplaza portalId y formId por los de tu cuenta.
+         2) En HubSpot, dentro de ese formulario, agrega los campos
+            "Ciudad" (city) y un campo personalizado "num_personas"
+            (y opcionalmente "gastos_interes") para que se guarden.
+         3) Mientras sigan como TU_PORTAL_ID / TU_FORM_ID, el form
+            funciona en modo demo (valida y muestra el éxito).
+      ───────────────────────────────────────────────────────────── */
+      var HS_PORTAL_ID = 'TU_PORTAL_ID';
+      var HS_FORM_ID   = 'TU_FORM_ID';
+      var HS_CONFIGURED = HS_PORTAL_ID.indexOf('TU_') !== 0 && HS_FORM_ID.indexOf('TU_') !== 0;
+      var HS_ENDPOINT = 'https://api.hsforms.com/submissions/v3/integration/submit/' + HS_PORTAL_ID + '/' + HS_FORM_ID;
+
+      var statusEl  = document.getElementById('form-status');
+      var successEl = document.getElementById('form-success');
+      var submitBtn = document.getElementById('wl-submit');
+      var emailOut  = document.getElementById('success-email');
+
+      function addError(fieldId){
+        var f = document.getElementById(fieldId);
+        if(f) f.classList.add('invalid');
+      }
+      function clearError(fieldId){
+        var f = document.getElementById(fieldId);
+        if(f) f.classList.remove('invalid');
+      }
+      function showStatus(type, msg){
+        if(!statusEl) return;
+        var icons = {
+          error: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12" y2="16.5"/></svg>'
+        };
+        statusEl.className = 'form-status show ' + type;
+        statusEl.innerHTML = (icons[type] || '') + '<span>' + msg + '</span>';
+      }
+      function clearStatus(){ if(statusEl){ statusEl.className = 'form-status'; statusEl.innerHTML = ''; } }
+
+      var RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      var FIELD_RULES = [
+        { field:'field-nombre',  input:'wl-nombre',  validate:function(v){ return v.trim().length >= 2; } },
+        { field:'field-correo',  input:'wl-correo',  validate:function(v){ return RE_EMAIL.test(v.trim()); } },
+        { field:'field-ciudad',  input:'wl-ciudad',  validate:function(v){ return v.trim().length >= 2; } }
+      ];
+
+      // Validación en vivo (limpia el error al escribir)
+      FIELD_RULES.forEach(function(rule){
+        var input = document.getElementById(rule.input);
+        if(input) input.addEventListener('input', function(){ clearError(rule.field); clearStatus(); });
+      });
+      form.querySelectorAll('input[name="personas"]').forEach(function(r){
+        r.addEventListener('change', function(){ clearError('field-personas'); clearStatus(); });
+      });
+      var consent = document.getElementById('wl-consent');
+      if(consent) consent.addEventListener('change', function(){ clearError('field-consent'); clearStatus(); });
+
+      function validate(){
+        var ok = true;
+        FIELD_RULES.forEach(function(rule){
+          var input = document.getElementById(rule.input);
+          if(!rule.validate(input ? input.value : '')){ addError(rule.field); ok = false; }
+          else { clearError(rule.field); }
+        });
+        var people = form.querySelector('input[name="personas"]:checked');
+        if(!people){ addError('field-personas'); ok = false; } else { clearError('field-personas'); }
+        if(consent && !consent.checked){ addError('field-consent'); ok = false; } else { clearError('field-consent'); }
+        return ok;
+      }
+
+      function collect(){
+        var gastos = Array.prototype.slice.call(form.querySelectorAll('input[name="gastos"]:checked'))
+                        .map(function(c){ return c.value; }).join(', ');
+        var people = form.querySelector('input[name="personas"]:checked');
+        return {
+          nombre: document.getElementById('wl-nombre').value.trim(),
+          correo: document.getElementById('wl-correo').value.trim(),
+          ciudad: document.getElementById('wl-ciudad').value.trim(),
+          personas: people ? people.value : '',
+          gastos: gastos,
+          empresa: document.getElementById('wl-empresa').value
+        };
+      }
+
+      function resetBtn(){
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+      }
+
+      function onSuccess(data){
+        resetBtn();
+        if(emailOut) emailOut.textContent = data.correo;
+        form.style.display = 'none';
+        successEl.classList.add('show');
+        // GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'hubspot_form_submit', form_id: HS_CONFIGURED ? HS_FORM_ID : 'demo', ciudad: data.ciudad, personas: data.personas });
+      }
+
+      function onError(){
+        resetBtn();
+        showStatus('error', 'No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.');
+      }
+
+      function sendToHubSpot(data){
+        var payload = {
+          fields: [
+            { name: 'firstname', value: data.nombre },
+            { name: 'email',     value: data.correo },
+            { name: 'city',      value: data.ciudad },
+            { name: 'num_personas', value: data.personas },
+            { name: 'gastos_interes', value: data.gastos }
+          ],
+          context: { pageUri: window.location.href, pageName: document.title },
+          legalConsentOptions: {
+            consent: {
+              consentToProcess: true,
+              text: 'Acepto el tratamiento de mis datos para que Cuenta Clara me contacte sobre la app.'
+            }
+          }
+        };
+        return fetch(HS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function(res){
+          if(!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json().catch(function(){ return {}; });
+        });
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        clearStatus();
+
+        // Honeypot: si un bot lo completa, abortamos silenciosamente
+        var data = collect();
+        if(data.empresa){ onSuccess(data); return; }
+
+        if(!validate()){
+          showStatus('error', 'Revisa los campos marcados para continuar.');
+          var firstInvalid = form.querySelector('.field.invalid input, .invalid input');
+          if(firstInvalid) firstInvalid.focus();
+          return;
+        }
+
+        // Modo demo mientras no configures tu HubSpot
+        if(!HS_CONFIGURED){
+          submitBtn.classList.add('loading');
+          submitBtn.disabled = true;
+          setTimeout(function(){ onSuccess(data); }, 900);
+          return;
+        }
+
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+        sendToHubSpot(data).then(function(){ onSuccess(data); }).catch(function(){ onError(); });
+      });
+    })();
+
+    // Evento para GTM: se dispara cuando HubSpot confirma el envío del formulario
+    window.dataLayer = window.dataLayer || [];
+    window.addEventListener('message', function(e){
+      if (e.data && e.data.type === 'hsFormCallback' && e.data.eventName === 'onFormSubmitted') {
+        window.dataLayer.push({ event: 'hubspot_form_submit', form_id: e.data.id });
+      }
+    });
+
+    // Evento para GTM: se abre una pregunta de la FAQ
+    document.querySelectorAll('details').forEach(function(d){
+      d.addEventListener('toggle', function(){
+        if (d.open) {
+          window.dataLayer.push({ event: 'faq_open', faq_question: d.querySelector('summary').textContent.trim() });
+        }
+      });
+    });
+
+    // ===== Navbar: magnetic cursor, morphing logo, compact mode, scroll spy =====
+    (function(){
+      var header = document.querySelector('header');
+      var toggle = document.getElementById('nav-toggle');
+      var list   = document.getElementById('nav-list');
+      var links  = list ? Array.prototype.slice.call(list.querySelectorAll('a[href^="#"]')) : [];
+      if(!header || !toggle || !list) return;
+
+      function cerrarMenu(){
+        list.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+        toggle.setAttribute('aria-label','Abrir menú');
+      }
+
+      // Hamburguesa
+      toggle.addEventListener('click', function(){
+        var abierto = list.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+        toggle.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+      });
+
+      // Cerrar al elegir un enlace o al hacer clic fuera
+      links.forEach(function(a){ a.addEventListener('click', cerrarMenu); });
+      document.addEventListener('click', function(e){
+        if(!toggle.contains(e.target) && !list.contains(e.target)) cerrarMenu();
+      });
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') cerrarMenu();
+      });
+      // Al volver a escritorio, restaurar estado
+      window.addEventListener('resize', function(){
+        if(window.innerWidth > 860) cerrarMenu();
+      });
+
+      // Magnetic cursor tracking para pills y hamburguesa
+      var magneticElements = document.querySelectorAll('.section-link, .nav-toggle');
+      magneticElements.forEach(function(el){
+        el.addEventListener('mousemove', function(e){
+          var rect = el.getBoundingClientRect();
+          var mx = e.clientX - rect.left;
+          var my = e.clientY - rect.top;
+          el.style.setProperty('--mx', mx + 'px');
+          el.style.setProperty('--my', my + 'px');
+        });
+        el.addEventListener('mouseleave', function(){
+          el.style.removeProperty('--mx');
+          el.style.removeProperty('--my');
+        });
+      });
+
+      // Sombra + barra de progreso + compact mode cuando la página se desplaza
+      var docEl = document.documentElement;
+      var compactTriggered = false;
+      function onScroll(){
+        var st = window.scrollY;
+        header.classList.toggle('scrolled', st > 8);
+        // Compact mode después de mucho scroll (ej. 600px)
+        var shouldCompact = st > 600;
+        if(shouldCompact !== compactTriggered){
+          header.classList.toggle('compact', shouldCompact);
+          compactTriggered = shouldCompact;
+        }
+        // Actualiza barra de progreso (nav::after) con scroll real
+        var scrollHeight = docEl.scrollHeight - window.innerHeight;
+        var progress = scrollHeight > 0 ? Math.min(st / scrollHeight, 1) : 0;
+        header.style.setProperty('--scroll-progress', progress.toFixed(4));
+      }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      onScroll();
+
+      // Resalta el enlace de la sección visible (scroll spy)
+      var secciones = links.map(function(a){
+        return document.querySelector(a.getAttribute('href'));
+      }).filter(Boolean);
+      if('IntersectionObserver' in window && secciones.length){
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(en){
+            if(en.isIntersecting){
+              links.forEach(function(a){
+                a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id);
+              });
+            }
+          });
+        }, { rootMargin:'-45% 0px -50% 0px', threshold:0 });
+        secciones.forEach(function(s){ obs.observe(s); });
+      }
+    })();
+
+    // ===== Beneficios: tilt 3D, partículas seguidoras, iconos magnéticos =====
+    (function(){
+      var cards = document.querySelectorAll('.benefit');
+      if(!cards.length) return;
+      
+      cards.forEach(function(card){
+        var inner = card.querySelector('.benefit-inner');
+        var icon = card.querySelector('.benefit-icon svg');
+        if(!inner) return;
+        
+        // Tilt 3D + partículas
+        card.addEventListener('mousemove', function(e){
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+          var cx = rect.width / 2;
+          var cy = rect.height / 2;
+          var rx = ((y - cy) / cy) * 6;  // max 6deg
+          var ry = ((cx - x) / cx) * 6;
+          inner.style.transform = 'perspective(1000px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) scale3d(1.01,1.01,1.01)';
+          // Partículas siguen cursor
+          card.style.setProperty('--px', x + 'px');
+          card.style.setProperty('--py', y + 'px');
+        });
+        
+        card.addEventListener('mouseleave', function(){
+          inner.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1,1,1)';
+          card.style.removeProperty('--px');
+          card.style.removeProperty('--py');
+        });
+        
+        // Icono magnético
+        if(icon){
+          var iconRect = null;
+          icon.parentElement.addEventListener('mousemove', function(e){
+            iconRect = icon.parentElement.getBoundingClientRect();
+            var mx = e.clientX - iconRect.left;
+            var my = e.clientY - iconRect.top;
+            var cx = iconRect.width / 2;
+            var cy = iconRect.height / 2;
+            var dx = (mx - cx) / 8;
+            var dy = (my - cy) / 8;
+            icon.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(1.1)';
+          });
+          icon.parentElement.addEventListener('mouseleave', function(){
+            icon.style.transform = 'translate(0,0) scale(1)';
+          });
+        }
+      });
+      
+      // IntersectionObserver para re-trigger animación si sale/vuelve a viewport
+      if('IntersectionObserver' in window){
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(en){
+            if(en.isIntersecting){
+              en.target.style.animation = 'none';
+              en.target.offsetHeight; // force reflow
+              en.target.style.animation = '';
+            }
+          });
+        }, {threshold:0.3});
+        cards.forEach(function(c){ obs.observe(c); });
+      }
+    })();
+
+    // ===== Cómo funciona: nodos magnéticos, líneas de timeline =====
+    (function(){
+      var steps = document.querySelectorAll('.step');
+      if(!steps.length) return;
+      
+      steps.forEach(function(step){
+        var node = step.querySelector('.step-node');
+        var icon = step.querySelector('.step-node svg');
+        if(!node) return;
+        
+        // Nodo magnético (icono se mueve dentro del nodo)
+        if(icon){
+          node.addEventListener('mousemove', function(e){
+            var rect = node.getBoundingClientRect();
+            var mx = e.clientX - rect.left;
+            var my = e.clientY - rect.top;
+            var cx = rect.width / 2;
+            var cy = rect.height / 2;
+            var dx = (mx - cx) / 5;
+            var dy = (my - cy) / 5;
+            icon.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(1.1)';
+          });
+          node.addEventListener('mouseleave', function(){
+            icon.style.transform = 'translate(0,0) scale(1)';
+          });
+        }
+      });
+      
+      // IntersectionObserver para re-trigger animación
+      if('IntersectionObserver' in window){
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(en){
+            if(en.isIntersecting){
+              en.target.querySelectorAll('.step-content, .step-cta').forEach(function(el){
+                el.style.animation = 'none';
+                el.offsetHeight;
+                el.style.animation = '';
+              });
+            }
+          });
+        }, {threshold:0.3});
+        steps.forEach(function(s){ obs.observe(s); });
+      }
+    })();
+
+    // ===== Tema claro / oscuro: switch sol–luna =====
+    (function(){
+      var sw = document.getElementById('theme-switch');
+      var root = document.documentElement;
+      var meta = document.getElementById('theme-color');
+      var COLORS = { light:'#EAF3F1', dark:'#0A1020' };
+
+      function sync(theme){
+        if(sw){
+          sw.setAttribute('aria-checked', theme === 'dark' ? 'true' : 'false');
+          sw.setAttribute('aria-label', theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro');
+        }
+        if(meta) meta.setAttribute('content', COLORS[theme] || COLORS.light);
+      }
+
+      // Estado inicial coherente con lo que fijó el script del <head>
+      var current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      sync(current);
+
+      function setTheme(theme){
+        root.setAttribute('data-theme', theme);
+        try{ localStorage.setItem('cc-theme', theme); }catch(e){}
+        sync(theme);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event:'theme_toggle', theme: theme });
+      }
+
+      if(sw){
+        sw.addEventListener('click', function(){
+          setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        });
+      }
+
+      // Sigue la preferencia del sistema mientras el usuario no elija manualmente
+      if(window.matchMedia){
+        var mq = window.matchMedia('(prefers-color-scheme: dark)');
+        var onSystem = function(e){
+          var saved = null;
+          try{ saved = localStorage.getItem('cc-theme'); }catch(err){}
+          if(saved) return;
+          var t = e.matches ? 'dark' : 'light';
+          root.setAttribute('data-theme', t);
+          sync(t);
+        };
+        if(mq.addEventListener) mq.addEventListener('change', onSystem);
+        else if(mq.addListener) mq.addListener(onSystem);
+      }
+    })();
+  </script>
+</body>
+</html>
