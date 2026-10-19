@@ -506,84 +506,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .trust-list li{display:flex;align-items:center;gap:.7rem;font-size:.96rem;color:rgba(20,33,61,.85)}
     .trust-list li svg{flex-shrink:0;width:22px;height:22px;padding:3px;border-radius:50%;color:var(--teal);background:rgba(15,106,99,.1);stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 
-    .form-box{position:relative;background:var(--white);padding:2.2rem;border-radius:26px;border:1px solid var(--line);box-shadow:0 48px 90px -46px rgba(20,33,61,.55),0 18px 40px -24px rgba(20,33,61,.3);overflow:hidden}
-    .form-box::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--teal) 0%,var(--sun) 100%)}
-    .form-head{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--line)}
-    .form-head-icon{flex-shrink:0;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:var(--white);background:linear-gradient(135deg,var(--teal),var(--teal-dark));box-shadow:0 12px 24px -12px rgba(15,106,99,.9),inset 0 1px 0 rgba(255,255,255,.3)}
-    .form-head-icon svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    .form-head-title{flex:1;font:700 1.06rem 'Bricolage Grotesque',sans-serif;color:var(--ink);line-height:1.2}
-    .form-head-pill{flex-shrink:0;font:700 .72rem 'DM Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);background:rgba(15,106,99,.1);padding:.32rem .7rem;border-radius:999px;white-space:nowrap}
-
-    .waitlist-form{display:grid;gap:1.15rem}
-    .field{border:0;padding:0;margin:0;min-width:0}
-    .field .label,.field legend{display:block;padding:0;font:600 .88rem 'DM Sans',sans-serif;color:var(--ink);margin-bottom:.45rem}
-    .field .label .req{color:var(--teal)}
-    .field .label .opt{color:rgba(20,33,61,.5);font-weight:500}
-    .field input[type=text],.field input[type=email],.field input[type=tel]{width:100%;padding:.9rem 1rem;border-radius:12px;border:1.5px solid transparent;background:var(--mist);font:500 .98rem 'DM Sans',sans-serif;color:var(--ink);transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
-    .field input::placeholder{color:rgba(20,33,61,.42)}
-    .field input:hover{background:#e2efec}
-    .field input:focus{outline:none;background:var(--white);border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,106,99,.16)}
-    .field.invalid input{border-color:var(--danger);background:var(--white);box-shadow:0 0 0 3px rgba(200,64,47,.12)}
-    .field-error{display:none;margin-top:.4rem;font-size:.82rem;color:var(--danger)}
-    .field.invalid .field-error{display:block}
-
-    .people-options{display:flex;gap:.5rem;flex-wrap:wrap}
-    .people-options input,.chips input{position:absolute;opacity:0;width:1px;height:1px}
-    .people-options label{cursor:pointer;padding:.55rem 1.05rem;border-radius:999px;border:1.5px solid transparent;background:var(--mist);font:600 .9rem 'DM Sans',sans-serif;color:var(--ink);transition:border-color .2s ease,background .2s ease,color .2s ease,box-shadow .2s ease;user-select:none}
-    .people-options label:hover{border-color:var(--teal)}
-    .people-options input:checked + label{background:var(--teal);border-color:var(--teal);color:var(--white);box-shadow:0 8px 18px -10px rgba(15,106,99,.8)}
-    .people-options input:focus-visible + label{box-shadow:0 0 0 3px rgba(15,106,99,.25)}
-
-    .chips{display:flex;flex-wrap:wrap;gap:.5rem}
-    .chips label{cursor:pointer;padding:.5rem 1rem;border-radius:999px;border:1.5px solid transparent;background:var(--mist);font:600 .88rem 'DM Sans',sans-serif;color:var(--ink);transition:border-color .2s ease,background .2s ease,box-shadow .2s ease;user-select:none}
-    .chips label:hover{border-color:var(--sun);background:rgba(245,184,61,.14)}
-    .chips input:checked + label{background:rgba(245,184,61,.24);border-color:var(--sun)}
-    .chips input:focus-visible + label{box-shadow:0 0 0 3px rgba(245,184,61,.35)}
-
-    .consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.85rem;line-height:1.55;color:rgba(20,33,61,.72);cursor:pointer}
-    .consent input{flex-shrink:0;width:18px;height:18px;margin-top:.12rem;accent-color:var(--teal);cursor:pointer}
-    .consent a{color:var(--teal);text-decoration:underline;text-underline-offset:2px}
-    .consent.invalid{color:var(--danger)}
-    .consent.invalid input{outline:2px solid var(--danger);outline-offset:2px;border-radius:4px}
-
-    .hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-
-    .btn-submit{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:1.05rem 1.6rem;margin-top:.3rem;border:0;border-radius:999px;cursor:pointer;font:700 1rem 'DM Sans',sans-serif;color:var(--white);background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);box-shadow:0 14px 30px -14px rgba(15,106,99,.9),inset 0 1px 0 rgba(255,255,255,.25);overflow:hidden;isolation:isolate;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease}
-    .btn-submit::before{content:"";position:absolute;top:0;bottom:0;left:-70%;width:45%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);transition:left .7s cubic-bezier(.22,1,.36,1);pointer-events:none}
-    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 20px 40px -16px rgba(15,106,99,.95),inset 0 1px 0 rgba(255,255,255,.32)}
-    .btn-submit:hover::before{left:140%}
-    .btn-submit:active{transform:scale(.99)}
-    .btn-submit:focus-visible{outline:none;box-shadow:0 0 0 3px var(--mist),0 0 0 5px var(--sun),0 14px 30px -14px rgba(15,106,99,.9)}
-    .btn-submit[disabled]{opacity:.75;cursor:progress;transform:none}
-    .btn-submit .spinner{display:none;width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.45);border-top-color:var(--white);animation:btn-spin .7s linear infinite}
-    .btn-submit.loading .spinner{display:block}
-    @keyframes btn-spin{to{transform:rotate(360deg)}}
-
-    .form-note{font-size:.8rem;color:rgba(20,33,61,.55);text-align:center;margin:0}
-    .form-status{display:none;align-items:flex-start;gap:.6rem;padding:.85rem 1rem;border-radius:12px;font-size:.88rem;line-height:1.5}
-    .form-status.show{display:flex}
-    .form-status svg{flex-shrink:0;width:18px;height:18px;margin-top:.1rem;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-    .form-status.error{background:rgba(200,64,47,.1);color:#8f2b1f}
-
-    .form-success{display:none;text-align:center;padding:.5rem 0}
-    .form-success.show{display:block;animation:faq-in .45s cubic-bezier(.22,1,.36,1) both}
-    .form-success .check{width:64px;height:64px;margin:0 auto 1.1rem;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--teal),var(--teal-dark));box-shadow:0 16px 34px -14px rgba(15,106,99,.8)}
-    .form-success .check svg{width:32px;height:32px;stroke:var(--white);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-    .form-success h3{font:700 1.35rem 'Bricolage Grotesque',sans-serif;color:var(--ink);margin-bottom:.5rem}
-    .form-success p{margin:0 auto;max-width:40ch;color:rgba(20,33,61,.75);font-size:.96rem}
-    .form-success strong{color:var(--teal-dark)}
-
     @media(max-width:860px){
       .form-grid{grid-template-columns:1fr;gap:2.5rem}
       .prefooter-copy p{max-width:none}
-    }
-    @media(max-width:520px){
-      .form-box{padding:1.4rem;border-radius:20px}
-      .people-options label,.chips label{font-size:.85rem;padding:.5rem .85rem}
-    }
-    @media(prefers-reduced-motion:reduce){
-      .btn-submit,.btn-submit::before,.people-options label,.chips label,.form-success.show{transition:none;animation:none}
-      .btn-submit .spinner{animation:none}
     }
 
     /* 10. Footer – profesional con marca, navegación y barra inferior */
@@ -746,29 +671,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     [data-theme="dark"] .prefooter-copy p{color:var(--text-2)}
     [data-theme="dark"] .trust-list li{color:rgba(233,241,240,.88)}
     [data-theme="dark"] .trust-list li svg{color:var(--accent-soft);background:rgba(45,212,191,.14)}
-    [data-theme="dark"] .form-box{background:var(--surface);border-color:var(--line);box-shadow:0 48px 90px -46px rgba(0,0,0,.85),0 18px 40px -24px rgba(0,0,0,.6)}
-    [data-theme="dark"] .form-head{border-bottom-color:var(--line)}
-    [data-theme="dark"] .form-head-title{color:var(--text)}
-    [data-theme="dark"] .form-head-pill{color:var(--accent-soft);background:rgba(45,212,191,.14)}
-    [data-theme="dark"] .field .label,[data-theme="dark"] .field legend{color:var(--text)}
-    [data-theme="dark"] .field .label .req{color:var(--accent-soft)}
-    [data-theme="dark"] .field .label .opt{color:var(--text-3)}
-    [data-theme="dark"] .field input[type=text],[data-theme="dark"] .field input[type=email],[data-theme="dark"] .field input[type=tel]{background:var(--surface-2);color:var(--text)}
-    [data-theme="dark"] .field input::placeholder{color:rgba(233,241,240,.4)}
-    [data-theme="dark"] .field input:hover{background:#1c2d4d}
-    [data-theme="dark"] .field input:focus{background:#0d1830;border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.22)}
-    [data-theme="dark"] .field.invalid input{border-color:#ff6b5e;background:#0d1830;box-shadow:0 0 0 3px rgba(255,107,94,.16)}
-    [data-theme="dark"] .field-error{color:#ff8b80}
-    [data-theme="dark"] .people-options label,[data-theme="dark"] .chips label{background:var(--surface-2);color:var(--text)}
-    [data-theme="dark"] .people-options label:hover,[data-theme="dark"] .chips label:hover{border-color:var(--accent-soft)}
-    [data-theme="dark"] .people-options input:checked + label{background:#0f8a7d;border-color:#0f8a7d;color:var(--white)}
-    [data-theme="dark"] .consent{color:rgba(233,241,240,.75)}
-    [data-theme="dark"] .consent a{color:var(--accent-soft)}
-    [data-theme="dark"] .form-note{color:rgba(233,241,240,.5)}
-    [data-theme="dark"] .form-status.error{background:rgba(255,107,94,.12);color:#ffb0a8}
-    [data-theme="dark"] .form-success h3{color:var(--text)}
-    [data-theme="dark"] .form-success p{color:var(--text-2)}
-    [data-theme="dark"] .form-success strong{color:var(--accent-soft)}
 
     /* Footer */
     [data-theme="dark"] footer.site{background:#0b1424}
@@ -1105,100 +1007,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Te escribimos solo cuando abramos cupos</li>
           </ul>
         </div>
-        <div class="form-box">
-          <div class="form-head">
-            <span class="form-head-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
-            <span class="form-head-title">Reserva tu acceso anticipado</span>
-            <span class="form-head-pill">Gratis</span>
-          </div>
-          <form class="waitlist-form" id="waitlist-form" novalidate>
-            <div class="field" id="field-nombre">
-              <label class="label" for="wl-nombre">Nombre <span class="req">*</span></label>
-              <input id="wl-nombre" name="nombre" type="text" autocomplete="name" placeholder="Ej. Laura Gómez" required aria-describedby="err-nombre">
-              <span class="field-error" id="err-nombre">Escribe tu nombre.</span>
-            </div>
-
-            <div class="field" id="field-correo">
-              <label class="label" for="wl-correo">Correo <span class="req">*</span></label>
-              <input id="wl-correo" name="correo" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com" required aria-describedby="err-correo">
-              <span class="field-error" id="err-correo">Escribe un correo válido.</span>
-            </div>
-
-            <div class="field" id="field-ciudad">
-              <label class="label" for="wl-ciudad">Ciudad <span class="req">*</span></label>
-              <input id="wl-ciudad" name="ciudad" type="text" autocomplete="address-level2" list="ciudades-co" placeholder="Ej. Bogotá" required aria-describedby="err-ciudad">
-              <datalist id="ciudades-co">
-                <option value="Bogotá"></option>
-                <option value="Medellín"></option>
-                <option value="Cali"></option>
-                <option value="Barranquilla"></option>
-                <option value="Cartagena"></option>
-                <option value="Bucaramanga"></option>
-                <option value="Pereira"></option>
-                <option value="Manizales"></option>
-                <option value="Santa Marta"></option>
-                <option value="Cúcuta"></option>
-                <option value="Ibagué"></option>
-                <option value="Villavicencio"></option>
-                <option value="Pasto"></option>
-                <option value="Montería"></option>
-                <option value="Neiva"></option>
-                <option value="Armenia"></option>
-                <option value="Valledupar"></option>
-                <option value="Sincelejo"></option>
-                <option value="Popayán"></option>
-                <option value="Tunja"></option>
-              </datalist>
-              <span class="field-error" id="err-ciudad">Escribe tu ciudad.</span>
-            </div>
-
-            <fieldset class="field" id="field-personas">
-              <legend class="label">¿Con cuántas personas vives? <span class="req">*</span></legend>
-              <div class="people-options">
-                <input type="radio" name="personas" id="wl-p1" value="1"><label for="wl-p1">1</label>
-                <input type="radio" name="personas" id="wl-p2" value="2"><label for="wl-p2">2</label>
-                <input type="radio" name="personas" id="wl-p3" value="3"><label for="wl-p3">3</label>
-                <input type="radio" name="personas" id="wl-p4" value="4"><label for="wl-p4">4</label>
-                <input type="radio" name="personas" id="wl-p5" value="5+"><label for="wl-p5">5 o más</label>
-              </div>
-              <span class="field-error" id="err-personas">Elige cuántas personas viven contigo.</span>
-            </fieldset>
-
-            <div class="field">
-              <span class="label">¿Qué quieres repartir? <span class="opt">(opcional)</span></span>
-              <div class="chips">
-                <input type="checkbox" name="gastos" id="wl-g-arriendo" value="Arriendo"><label for="wl-g-arriendo">Arriendo</label>
-                <input type="checkbox" name="gastos" id="wl-g-servicios" value="Servicios"><label for="wl-g-servicios">Servicios</label>
-                <input type="checkbox" name="gastos" id="wl-g-mercado" value="Mercado"><label for="wl-g-mercado">Mercado</label>
-                <input type="checkbox" name="gastos" id="wl-g-viajes" value="Viajes"><label for="wl-g-viajes">Viajes</label>
-              </div>
-            </div>
-
-            <div class="hp-field" aria-hidden="true">
-              <label for="wl-empresa">No completar</label>
-              <input id="wl-empresa" name="empresa" type="text" tabindex="-1" autocomplete="off">
-            </div>
-
-            <label class="consent" id="field-consent">
-              <input type="checkbox" name="consent" id="wl-consent" required>
-              <span>Acepto el <a href="#faq">tratamiento de mis datos</a> para que Cuenta Clara me contacte sobre la app.</span>
-            </label>
-
-            <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
-
-            <button class="btn-submit" type="submit" id="wl-submit">
-              <span class="spinner" aria-hidden="true"></span>
-              <span>Reservar mi cupo</span>
-            </button>
-            <p class="form-note">Sin costo durante el lanzamiento. No compartimos tus datos.</p>
-          </form>
-
-          <div class="form-success" id="form-success" role="status" aria-live="polite">
-            <div class="check" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <h3>¡Listo, ya estás en la lista!</h3>
-            <p>Te escribiremos a <strong id="success-email">tu correo</strong> apenas abramos cupos para tu grupo.</p>
-          </div>
+        <!-- ================================================================
+             SECCIÓN 9 · FORMULARIO DE HUBSPOT
+             ⬇️⬇️⬇️  PEGA AQUÍ EL CÓDIGO DE INSERCIÓN DE HUBSPOT (tal cual)  ⬇️⬇️⬇️
+             ================================================================ -->
+        <div class="hubspot-form">
+          <script src="https://js.hsforms.net/forms/embed/52186245.js" defer></script>
+          <div class="hs-form-frame" data-region="na1" data-form-id="c37c0956-9ee2-439e-bf91-d8d0d3265344" data-portal-id="52186245"></div>
         </div>
+        <!-- ===================== FIN CÓDIGO DE HUBSPOT ==================== -->
       </div>
     </section>
   </main>
@@ -1297,170 +1114,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       calc();
     })();
 
-    // ===== Formulario de lista de espera → HubSpot CRM =====
-    (function(){
-      var form = document.getElementById('waitlist-form');
-      if(!form) return;
-
-      /* ─────────────────────────────────────────────────────────────
-         CONFIGURA TU HUBSPOT AQUÍ:
-         1) Reemplaza portalId y formId por los de tu cuenta.
-         2) En HubSpot, dentro de ese formulario, agrega los campos
-            "Ciudad" (city) y un campo personalizado "num_personas"
-            (y opcionalmente "gastos_interes") para que se guarden.
-         3) Mientras sigan como TU_PORTAL_ID / TU_FORM_ID, el form
-            funciona en modo demo (valida y muestra el éxito).
-      ───────────────────────────────────────────────────────────── */
-      var HS_PORTAL_ID = 'TU_PORTAL_ID';
-      var HS_FORM_ID   = 'TU_FORM_ID';
-      var HS_CONFIGURED = HS_PORTAL_ID.indexOf('TU_') !== 0 && HS_FORM_ID.indexOf('TU_') !== 0;
-      var HS_ENDPOINT = 'https://api.hsforms.com/submissions/v3/integration/submit/' + HS_PORTAL_ID + '/' + HS_FORM_ID;
-
-      var statusEl  = document.getElementById('form-status');
-      var successEl = document.getElementById('form-success');
-      var submitBtn = document.getElementById('wl-submit');
-      var emailOut  = document.getElementById('success-email');
-
-      function addError(fieldId){
-        var f = document.getElementById(fieldId);
-        if(f) f.classList.add('invalid');
-      }
-      function clearError(fieldId){
-        var f = document.getElementById(fieldId);
-        if(f) f.classList.remove('invalid');
-      }
-      function showStatus(type, msg){
-        if(!statusEl) return;
-        var icons = {
-          error: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12" y2="16.5"/></svg>'
-        };
-        statusEl.className = 'form-status show ' + type;
-        statusEl.innerHTML = (icons[type] || '') + '<span>' + msg + '</span>';
-      }
-      function clearStatus(){ if(statusEl){ statusEl.className = 'form-status'; statusEl.innerHTML = ''; } }
-
-      var RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      var FIELD_RULES = [
-        { field:'field-nombre',  input:'wl-nombre',  validate:function(v){ return v.trim().length >= 2; } },
-        { field:'field-correo',  input:'wl-correo',  validate:function(v){ return RE_EMAIL.test(v.trim()); } },
-        { field:'field-ciudad',  input:'wl-ciudad',  validate:function(v){ return v.trim().length >= 2; } }
-      ];
-
-      // Validación en vivo (limpia el error al escribir)
-      FIELD_RULES.forEach(function(rule){
-        var input = document.getElementById(rule.input);
-        if(input) input.addEventListener('input', function(){ clearError(rule.field); clearStatus(); });
-      });
-      form.querySelectorAll('input[name="personas"]').forEach(function(r){
-        r.addEventListener('change', function(){ clearError('field-personas'); clearStatus(); });
-      });
-      var consent = document.getElementById('wl-consent');
-      if(consent) consent.addEventListener('change', function(){ clearError('field-consent'); clearStatus(); });
-
-      function validate(){
-        var ok = true;
-        FIELD_RULES.forEach(function(rule){
-          var input = document.getElementById(rule.input);
-          if(!rule.validate(input ? input.value : '')){ addError(rule.field); ok = false; }
-          else { clearError(rule.field); }
-        });
-        var people = form.querySelector('input[name="personas"]:checked');
-        if(!people){ addError('field-personas'); ok = false; } else { clearError('field-personas'); }
-        if(consent && !consent.checked){ addError('field-consent'); ok = false; } else { clearError('field-consent'); }
-        return ok;
-      }
-
-      function collect(){
-        var gastos = Array.prototype.slice.call(form.querySelectorAll('input[name="gastos"]:checked'))
-                        .map(function(c){ return c.value; }).join(', ');
-        var people = form.querySelector('input[name="personas"]:checked');
-        return {
-          nombre: document.getElementById('wl-nombre').value.trim(),
-          correo: document.getElementById('wl-correo').value.trim(),
-          ciudad: document.getElementById('wl-ciudad').value.trim(),
-          personas: people ? people.value : '',
-          gastos: gastos,
-          empresa: document.getElementById('wl-empresa').value
-        };
-      }
-
-      function resetBtn(){
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
-      }
-
-      function onSuccess(data){
-        resetBtn();
-        if(emailOut) emailOut.textContent = data.correo;
-        form.style.display = 'none';
-        successEl.classList.add('show');
-        // GTM
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'hubspot_form_submit', form_id: HS_CONFIGURED ? HS_FORM_ID : 'demo', ciudad: data.ciudad, personas: data.personas });
-      }
-
-      function onError(){
-        resetBtn();
-        showStatus('error', 'No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.');
-      }
-
-      function sendToHubSpot(data){
-        var payload = {
-          fields: [
-            { name: 'firstname', value: data.nombre },
-            { name: 'email',     value: data.correo },
-            { name: 'city',      value: data.ciudad },
-            { name: 'num_personas', value: data.personas },
-            { name: 'gastos_interes', value: data.gastos }
-          ],
-          context: { pageUri: window.location.href, pageName: document.title },
-          legalConsentOptions: {
-            consent: {
-              consentToProcess: true,
-              text: 'Acepto el tratamiento de mis datos para que Cuenta Clara me contacte sobre la app.'
-            }
-          }
-        };
-        return fetch(HS_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).then(function(res){
-          if(!res.ok) throw new Error('HTTP ' + res.status);
-          return res.json().catch(function(){ return {}; });
-        });
-      }
-
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        clearStatus();
-
-        // Honeypot: si un bot lo completa, abortamos silenciosamente
-        var data = collect();
-        if(data.empresa){ onSuccess(data); return; }
-
-        if(!validate()){
-          showStatus('error', 'Revisa los campos marcados para continuar.');
-          var firstInvalid = form.querySelector('.field.invalid input, .invalid input');
-          if(firstInvalid) firstInvalid.focus();
-          return;
-        }
-
-        // Modo demo mientras no configures tu HubSpot
-        if(!HS_CONFIGURED){
-          submitBtn.classList.add('loading');
-          submitBtn.disabled = true;
-          setTimeout(function(){ onSuccess(data); }, 900);
-          return;
-        }
-
-        submitBtn.classList.add('loading');
-        submitBtn.disabled = true;
-        sendToHubSpot(data).then(function(){ onSuccess(data); }).catch(function(){ onError(); });
-      });
-    })();
-
-    // Evento para GTM: se dispara cuando HubSpot confirma el envío del formulario
+    // Evento para GTM: se dispara cuando HubSpot confirma el envío del formulario (embed nativo)
     window.dataLayer = window.dataLayer || [];
     window.addEventListener('message', function(e){
       if (e.data && e.data.type === 'hsFormCallback' && e.data.eventName === 'onFormSubmitted') {
