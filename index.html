@@ -1057,15 +1057,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Te escribimos solo cuando abramos cupos</li>
           </ul>
         </div>
-        <!-- ================================================================
-             SECCIÓN 9 · FORMULARIO DE HUBSPOT
-             ⬇️⬇️⬇️  PEGA AQUÍ EL CÓDIGO DE INSERCIÓN DE HUBSPOT (tal cual)  ⬇️⬇️⬇️
-             ================================================================ -->
-        <div class="hubspot-form">
-          <script src="https://js.hsforms.net/forms/embed/52186245.js" defer></script>
-          <div class="hs-form-frame" data-region="na1" data-form-id="c37c0956-9ee2-439e-bf91-d8d0d3265344" data-portal-id="52186245"></div>
+        <!-- ===== FORMULARIO DE UN SOLO CAMPO: EMAIL (EmailJS) ===== -->
+        <div class="waitlist-card">
+          <span class="waitlist-badge">Acceso anticipado</span>
+          <form class="waitlist-form" id="waitlist-form" novalidate>
+            <label class="waitlist-label" for="waitlist-email">Tu correo electrónico</label>
+            <div class="waitlist-row">
+              <div class="waitlist-field">
+                <input id="waitlist-email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="email" inputmode="email" required aria-describedby="waitlist-help waitlist-status">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><polyline points="3.5 7 12 13 20.5 7"/></svg>
+              </div>
+              <button class="waitlist-submit" type="submit">
+                <span class="waitlist-submit-text">Unirme</span>
+                <span aria-hidden="true">&rarr;</span>
+              </button>
+            </div>
+            <p class="waitlist-help" id="waitlist-help">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              Sin spam. Solo te escribimos cuando abramos cupos.
+            </p>
+            <p class="waitlist-status" id="waitlist-status" role="status" aria-live="polite"></p>
+          </form>
         </div>
-        <!-- ===================== FIN CÓDIGO DE HUBSPOT ==================== -->
+
       </div>
     </section>
   </main>
@@ -1180,7 +1194,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
          EmailJS — rellena estos tres valores con los de tu panel:
          https://dashboard.emailjs.com/admin
 
-         · publicKey  → Account → General → API Keys  (PEGAR_PUBLIC_KEY)
+         · publicKey  → Account → General → API Keys
          · serviceID  → Email Services    (ej. "service_abc1234")
          · templateID → Email Templates   (ej. "template_xyz9876")
 
