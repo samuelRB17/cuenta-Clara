@@ -1239,7 +1239,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
       }
 
+      var sending = false;
       function setBusy(busy){
+        sending = busy;
         button.disabled = busy;
         if(label) label.textContent = busy ? 'Enviando…' : DEFAULT_LABEL;
       }
@@ -1249,7 +1251,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         setStatus(message, 'error');
       }
 
+      // Vuelve al estado editable: el correo siempre se puede corregir.
+      function resetForm(){
+        form.classList.remove('is-success');
+        button.disabled = false;
+        if(label) label.textContent = DEFAULT_LABEL;
+        setStatus('');
+      }
+
       function succeed(value){
+        sending = false;
         try{ localStorage.setItem('cc-waitlist-email', value); }catch(err){}
 
         window.dataLayer = window.dataLayer || [];
@@ -1258,13 +1269,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         form.classList.add('is-success');
         if(label) label.textContent = '¡Estás dentro!';
         button.disabled = true;
-        setStatus('¡Listo! Te enviamos la bienvenida a ' + value + '.', 'success');
-        email.readOnly = true;
+        setStatus('¡Listo! Te enviamos la bienvenida a ' + value + '. Corrige el correo si lo necesitas.', 'success');
       }
 
       email.addEventListener('input', function(){
         if(email.getAttribute('aria-invalid') === 'true'){
           email.removeAttribute('aria-invalid');
+        }
+        if(sending) return;
+        // Tras un envío correcto, escribir devuelve el formulario a su estado normal.
+        if(form.classList.contains('is-success') || button.disabled){
+          resetForm();
+        } else if(status.className.indexOf('error') !== -1){
           setStatus('');
         }
       });
@@ -1299,10 +1315,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         setBusy(true);
 
-        // sendForm envía los campos con atributo name: email → {{email}}
-        window.emailjs.sendForm(EMAILJS.serviceID, EMAILJS.templateID, form, {
-          publicKey: EMAILJS.publicKey
-        }).then(function(){
+        // emailjs.send(serviceID, templateID, params, options)
+        // `email` llena {{email}} en la plantilla y define el destinatario.
+        window.emailjs.send(
+          EMAILJS.serviceID,
+          EMAILJS.templateID,
+          { email: value },
+          { publicKey: EMAILJS.publicKey }
+        ).then(function(response){
+          console.info('[EmailJS] Correo enviado:', response && response.status, response && response.text);
           succeed(value);
         }).catch(function(error){
           console.error('[EmailJS] Error al enviar:', error);

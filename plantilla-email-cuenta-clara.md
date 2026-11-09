@@ -429,6 +429,21 @@ Solo cambia el `src` y el `width`/`height` según la aparición. La altura de l�
 4. **Enlaces:** reemplaza `https://cuentaclara.example/...` por las URLs reales.
 5. **Logo:** ver *Archivos de marca*.
 
+## Pegar la plantilla en EmailJS
+
+Este archivo es **independiente**: la landing no lo carga ni lo referencia. Solo sirve para copiar y pegar.
+
+1. Abre **EmailJS → Email Templates → tu plantilla** (`template_9s5xlpi`).
+2. En la pestaña **Content**, cambia a modo **HTML** y pega el archivo `email-cuenta-clara.html` completo (desde `<!DOCTYPE html>` hasta `</html>`). No lo recortes: el bloque `<style>` del `<head>` contiene las reglas de móvil.
+3. En **Settings** de la plantilla:
+   - **To Email:** `{{email}}`
+   - **From Name:** `Cuenta Clara`
+   - **From Email:** *Use Default Email Address*
+   - **Reply To:** `samuel.ramirezb@uniagustiniana.edu.co`
+4. Guarda y prueba desde la landing. El formulario envía `{ email: "..." }`, que es la única variable que la plantilla necesita para resolver el destinatario.
+
+> El cuerpo del correo no usa variables `{{ }}`: el saludo y las cifras son contenido fijo. Si quieres personalizarlo, `{{email}}` también está disponible dentro del HTML (por ejemplo, en la línea de preheader), porque llega como parámetro del envío.
+
 ## Notas técnicas
 
 - Tablas con `role="presentation"`, CSS inline y `color-scheme: light only` para que los clientes no inviertan el diseño a oscuro.
