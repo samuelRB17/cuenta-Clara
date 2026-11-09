@@ -494,7 +494,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .faq details,.faq details::before,.faq summary,.faq summary::after,.faq-icon,.faq details p{transition:none;animation:none}
     }
 
-    /* 9. Pre-footer: formulario de lista de espera (conectado a HubSpot) */
+    /* 9. Pre-footer: formulario de lista de espera (un solo campo: email) */
     .prefooter{position:relative;background:linear-gradient(180deg,var(--white) 0%,var(--mist) 100%);overflow:hidden;--danger:#C8402F}
     .prefooter::before{content:"";position:absolute;top:-160px;right:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(15,106,99,.12) 0%,transparent 68%);pointer-events:none}
     .prefooter::after{content:"";position:absolute;bottom:-200px;left:-140px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(245,184,61,.14) 0%,transparent 70%);pointer-events:none}
@@ -509,6 +509,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     @media(max-width:860px){
       .form-grid{grid-template-columns:1fr;gap:2.5rem}
       .prefooter-copy p{max-width:none}
+    }
+
+    /* Formulario de un solo campo (Email) */
+    .waitlist-card{position:relative;background:var(--white);border:1px solid var(--line);border-radius:28px;padding:clamp(1.5rem,3vw,2.25rem);box-shadow:0 30px 60px -30px rgba(20,33,61,.35),0 6px 18px -12px rgba(20,33,61,.12);overflow:hidden;isolation:isolate}
+    .waitlist-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--teal),var(--sun),var(--teal));background-size:200% 100%;animation:gradient-shift 4s ease-in-out infinite}
+    .waitlist-badge{display:inline-flex;align-items:center;gap:.5rem;font:700 .72rem 'DM Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);background:rgba(15,106,99,.09);padding:.4rem .75rem;border-radius:999px;margin-bottom:1.15rem}
+    .waitlist-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal)}
+    .waitlist-label{display:block;font:700 .9rem 'DM Sans',sans-serif;color:var(--ink);margin-bottom:.55rem}
+    .waitlist-form{display:grid;gap:0}
+    .waitlist-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.65rem;align-items:stretch}
+    .waitlist-field{position:relative;display:flex;align-items:center;min-width:0}
+    .waitlist-field svg{position:absolute;left:1.05rem;width:20px;height:20px;stroke:rgba(20,33,61,.45);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;pointer-events:none;transition:stroke .25s ease}
+    .waitlist-field input{width:100%;min-width:0;padding:1.05rem 1.1rem 1.05rem 3rem;border:1.5px solid var(--line);border-radius:14px;background:var(--white);color:var(--ink);font:500 1rem 'DM Sans',sans-serif;transition:border-color .25s ease,box-shadow .25s ease,background .25s ease}
+    .waitlist-field input::placeholder{color:rgba(20,33,61,.42)}
+    .waitlist-field input:hover{border-color:rgba(15,106,99,.45)}
+    .waitlist-field input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px rgba(15,106,99,.14)}
+    .waitlist-field input:focus + svg,.waitlist-field:focus-within svg{stroke:var(--teal)}
+    .waitlist-field input[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 4px rgba(200,64,47,.12)}
+    .waitlist-submit{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:1.05rem 1.5rem;border:0;border-radius:14px;background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);color:var(--white);font:700 .95rem 'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;box-shadow:0 12px 26px -12px rgba(15,106,99,.9),inset 0 1px 0 rgba(255,255,255,.22);transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease,opacity .25s ease}
+    .waitlist-submit span[aria-hidden="true"]{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--sun);color:var(--ink);font-weight:800;font-size:.95rem;line-height:1;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+    .waitlist-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 18px 34px -14px rgba(15,106,99,.95),inset 0 1px 0 rgba(255,255,255,.28)}
+    .waitlist-submit:hover:not(:disabled) span[aria-hidden="true"]{transform:rotate(-45deg) scale(1.08)}
+    .waitlist-submit:active:not(:disabled){transform:scale(.98)}
+    .waitlist-submit:focus-visible{outline:none;box-shadow:0 0 0 3px var(--white),0 0 0 5px var(--sun)}
+    .waitlist-submit:disabled{opacity:.65;cursor:default}
+    .waitlist-help{display:flex;align-items:center;gap:.45rem;margin-top:.9rem;font-size:.82rem;line-height:1.5;color:rgba(20,33,61,.6)}
+    .waitlist-help svg{flex:none;width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .waitlist-status{max-height:0;opacity:0;overflow:hidden;font-size:.85rem;font-weight:600;line-height:1.5;transition:max-height .3s ease,opacity .3s ease,margin .3s ease}
+    .waitlist-status.error,.waitlist-status.success{max-height:5rem;opacity:1;margin-top:.75rem}
+    .waitlist-status.error{color:var(--danger)}
+    .waitlist-status.success{color:var(--teal)}
+    .waitlist-form.is-success .waitlist-field input{border-color:rgba(15,106,99,.35);background:rgba(15,106,99,.05)}
+    .waitlist-form.is-success .waitlist-submit{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%)}
+    @media(max-width:560px){
+      .waitlist-row{grid-template-columns:1fr}
+      .waitlist-submit{width:100%}
     }
 
     /* 10. Footer – profesional con marca, navegación y barra inferior */
@@ -671,6 +707,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     [data-theme="dark"] .prefooter-copy p{color:var(--text-2)}
     [data-theme="dark"] .trust-list li{color:rgba(233,241,240,.88)}
     [data-theme="dark"] .trust-list li svg{color:var(--accent-soft);background:rgba(45,212,191,.14)}
+    [data-theme="dark"] .waitlist-card{background:var(--surface);border-color:var(--line);box-shadow:0 30px 60px -30px rgba(0,0,0,.7),0 6px 18px -12px rgba(0,0,0,.45)}
+    [data-theme="dark"] .waitlist-badge{color:var(--accent-soft);background:rgba(45,212,191,.14)}
+    [data-theme="dark"] .waitlist-badge::before{background:var(--accent-soft);box-shadow:0 0 10px var(--accent-soft)}
+    [data-theme="dark"] .waitlist-label{color:var(--text)}
+    [data-theme="dark"] .waitlist-field svg{stroke:rgba(233,241,240,.5)}
+    [data-theme="dark"] .waitlist-field input{background:#0d1830;color:var(--text);border-color:var(--line)}
+    [data-theme="dark"] .waitlist-field input::placeholder{color:rgba(233,241,240,.4)}
+    [data-theme="dark"] .waitlist-field input:hover{border-color:rgba(45,212,191,.5)}
+    [data-theme="dark"] .waitlist-field input:focus{border-color:var(--accent-soft);box-shadow:0 0 0 4px rgba(45,212,191,.18)}
+    [data-theme="dark"] .waitlist-field input:focus + svg,[data-theme="dark"] .waitlist-field:focus-within svg{stroke:var(--accent-soft)}
+    [data-theme="dark"] .waitlist-submit:focus-visible{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--sun)}
+    [data-theme="dark"] .waitlist-help{color:var(--text-3)}
+    [data-theme="dark"] .waitlist-status.success{color:var(--accent-soft)}
+    [data-theme="dark"] .waitlist-form.is-success .waitlist-field input{border-color:rgba(45,212,191,.4);background:rgba(45,212,191,.08)}
 
     /* Footer */
     [data-theme="dark"] footer.site{background:#0b1424}
@@ -995,12 +1045,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </section>
 
-    <!-- ===== SECCIÓN 9: PRE-FOOTER (formulario conectado a HubSpot CRM) ===== -->
+    <!-- ===== SECCIÓN 9: PRE-FOOTER (lista de espera con formulario de email) ===== -->
     <section class="prefooter" id="registro">
       <div class="wrap form-grid">
         <div class="prefooter-copy">
           <h2>Únete a la lista de espera</h2>
-          <p>Déjanos tus datos y te avisamos apenas abramos cupos para tu grupo.</p>
+          <p>Déjanos tu correo y te avisamos apenas abramos cupos para tu grupo.</p>
           <ul class="trust-list">
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Gratis durante el lanzamiento</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Sin tarjeta ni compromiso</li>
@@ -1011,9 +1061,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
              SECCIÓN 9 · FORMULARIO DE HUBSPOT
              ⬇️⬇️⬇️  PEGA AQUÍ EL CÓDIGO DE INSERCIÓN DE HUBSPOT (tal cual)  ⬇️⬇️⬇️
              ================================================================ -->
-             <script src="https://js.hsforms.net/forms/embed/52186245.js" defer></script>
-<div class="hs-form-frame" data-region="na1" data-form-id="c37c0956-9ee2-439e-bf91-d8d0d3265344" data-portal-id="52186245"></div>
-       
+        <div class="hubspot-form">
+          <script src="https://js.hsforms.net/forms/embed/52186245.js" defer></script>
+          <div class="hs-form-frame" data-region="na1" data-form-id="c37c0956-9ee2-439e-bf91-d8d0d3265344" data-portal-id="52186245"></div>
+        </div>
         <!-- ===================== FIN CÓDIGO DE HUBSPOT ==================== -->
       </div>
     </section>
@@ -1048,6 +1099,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
   </footer>
+
+  <!-- EmailJS SDK (v4) — se carga antes del script del formulario -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <script>
     // Demo del hero – calculadora interactiva con anillos visuales
@@ -1113,13 +1167,135 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       calc();
     })();
 
-    // Evento para GTM: se dispara cuando HubSpot confirma el envío del formulario (embed nativo)
-    window.dataLayer = window.dataLayer || [];
-    window.addEventListener('message', function(e){
-      if (e.data && e.data.type === 'hsFormCallback' && e.data.eventName === 'onFormSubmitted') {
-        window.dataLayer.push({ event: 'hubspot_form_submit', form_id: e.data.id });
+    // Formulario de lista de espera (un solo campo: email) → EmailJS
+    (function(){
+      var form   = document.getElementById('waitlist-form');
+      var email  = document.getElementById('waitlist-email');
+      var status = document.getElementById('waitlist-status');
+      var button = form ? form.querySelector('.waitlist-submit') : null;
+      var label  = form ? form.querySelector('.waitlist-submit-text') : null;
+      if(!form || !email || !status || !button) return;
+
+      /* -----------------------------------------------------------------
+         EmailJS — rellena estos tres valores con los de tu panel:
+         https://dashboard.emailjs.com/admin
+
+         · publicKey  → Account → General → API Keys  (PEGAR_PUBLIC_KEY)
+         · serviceID  → Email Services    (ej. "service_abc1234")
+         · templateID → Email Templates   (ej. "template_xyz9876")
+
+         La plantilla en EmailJS debe tener:
+           To Email:   {{email}}
+           From Name:  Cuenta Clara
+           From Email: Use Default Email Address
+           Reply To:   samuel.ramirezb@uniagustiniana.edu.co
+
+         El formulario envía el campo name="email", que EmailJS usa
+         como destinatario del correo.
+         ----------------------------------------------------------------- */
+      var EMAILJS = {
+        publicKey:  'RLZGzrzYXwvCfmX8x',
+        serviceID:  'service_cgg2uuo',
+        templateID: 'template_9s5xlpi'
+      };
+
+      var DEFAULT_LABEL = label ? label.textContent : 'Unirme';
+
+      // Evita llamar a EmailJS mientras las claves sigan sin rellenar.
+      var CONFIGURED = [EMAILJS.publicKey, EMAILJS.serviceID, EMAILJS.templateID].every(function(value){
+        return typeof value === 'string' && value.trim() !== '' && value.indexOf('PEGAR_') !== 0;
+      });
+
+      var sdkReady = false;
+      function ensureSDK(){
+        if(typeof window.emailjs === 'undefined') return false;
+        if(!sdkReady){
+          window.emailjs.init({ publicKey: EMAILJS.publicKey });
+          sdkReady = true;
+        }
+        return true;
       }
-    });
+
+      function setStatus(message, type){
+        status.textContent = message || '';
+        status.className = 'waitlist-status' + (type ? ' ' + type : '');
+      }
+
+      function isValidEmail(value){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+      }
+
+      function setBusy(busy){
+        button.disabled = busy;
+        if(label) label.textContent = busy ? 'Enviando…' : DEFAULT_LABEL;
+      }
+
+      function fail(message){
+        setBusy(false);
+        setStatus(message, 'error');
+      }
+
+      function succeed(value){
+        try{ localStorage.setItem('cc-waitlist-email', value); }catch(err){}
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event:'waitlist_signup', method:'email' });
+
+        form.classList.add('is-success');
+        if(label) label.textContent = '¡Estás dentro!';
+        button.disabled = true;
+        setStatus('¡Listo! Te enviamos la bienvenida a ' + value + '.', 'success');
+        email.readOnly = true;
+      }
+
+      email.addEventListener('input', function(){
+        if(email.getAttribute('aria-invalid') === 'true'){
+          email.removeAttribute('aria-invalid');
+          setStatus('');
+        }
+      });
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(button.disabled) return;
+
+        var value = email.value.trim();
+
+        if(!isValidEmail(value)){
+          email.setAttribute('aria-invalid', 'true');
+          setStatus('Escribe un correo válido, por ejemplo nombre@correo.com', 'error');
+          email.focus();
+          return;
+        }
+
+        email.removeAttribute('aria-invalid');
+        setStatus('');
+
+        if(!CONFIGURED){
+          console.warn('[EmailJS] Faltan las claves: edita el objeto EMAILJS en index.html (publicKey, serviceID, templateID).');
+          fail('El envío todavía no está configurado. Escríbenos a hola@cuentaclara.example.');
+          return;
+        }
+
+        if(!ensureSDK()){
+          console.error('[EmailJS] El SDK no está disponible. Revisa la conexión o si el CDN está bloqueado.');
+          fail('No pudimos conectar con el servicio de envío. Intenta de nuevo en unos segundos.');
+          return;
+        }
+
+        setBusy(true);
+
+        // sendForm envía los campos con atributo name: email → {{email}}
+        window.emailjs.sendForm(EMAILJS.serviceID, EMAILJS.templateID, form, {
+          publicKey: EMAILJS.publicKey
+        }).then(function(){
+          succeed(value);
+        }).catch(function(error){
+          console.error('[EmailJS] Error al enviar:', error);
+          fail('No pudimos enviar el correo. Intenta de nuevo en unos segundos.');
+        });
+      });
+    })();
 
     // Evento para GTM: se abre una pregunta de la FAQ
     document.querySelectorAll('details').forEach(function(d){

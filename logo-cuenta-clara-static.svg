@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="44" height="44" role="img" aria-label="Cuenta Clara">
+  <defs>
+    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F6B63"/>
+      <stop offset="100%" stop-color="#0A4A45"/>
+    </linearGradient>
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.35)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+  </defs>
+  <rect x="0" y="0" width="44" height="44" rx="14" fill="url(#tealGrad)"/>
+  <rect x="0" y="0" width="44" height="44" rx="14" fill="url(#centerGlow)"/>
+  
+  <!-- Donut segments -->
+  <path d="M22 2 C11 2 2 11 2 22 C2 27.5 4.5 32.5 8.5 36 L22 22 Z" fill="#FFFFFF" opacity="0.95"/>
+  <path d="M22 22 L25.5 10.5" stroke="rgba(15,106,99,0.3)" stroke-width="0.5" opacity="0.5"/>
+  <path d="M22 22 L25.5 10.5 L38.5 8.5" fill="#F5B83D"/>
+  <path d="M22 22 L38.5 8.5" stroke="rgba(15,106,99,0.3)" stroke-width="0.5" opacity="0.5"/>
+  <path d="M22 22 L38.5 8.5 L22 42" fill="#FFFFFF" opacity="0.5"/>
+  <path d="M22 22 L22 42" stroke="rgba(15,106,99,0.3)" stroke-width="0.5" opacity="0.5"/>
+  
+  <circle cx="22" cy="22" r="3.5" fill="#F5B83D"/>
+  <circle cx="22" cy="22" r="6" fill="none" stroke="rgba(15,106,99,0.6)" stroke-width="1.5"/>
+</svg>
