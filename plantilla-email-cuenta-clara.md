@@ -58,15 +58,25 @@ HTML copia-pega: tablas semánticas, CSS inline y un bloque mínimo de `<style>`
 | `logo-cuenta-clara-static.svg` | Vectorial estática (fuente del PNG y del base64). |
 | `logo-cuenta-clara.png` | **352×352, fondo transparente.** Recomendada para envíos reales. |
 
-**Opción A — la que viene por defecto:** logo embebido como `data:image/svg+xml;base64`. Se ve perfecto en Apple Mail, iOS, Outlook web y la vista previa del navegador, sin depender de hosting. Gmail y Outlook de escritorio pueden no mostrarlo.
-
-**Opción B — producción:** sube `logo-cuenta-clara.png` a tu CDN y reemplaza el `src="data:image/svg+xml;base64,..."` en las **2** apariciones (header 38px, footer 24px) por:
+**Logo del correo:** la plantilla apunta a la URL absoluta del logo alojado en GitHub Pages, en las **2** apariciones (header 38px, footer 24px):
 
 ```
-<img src="https://tudominio.com/logo-cuenta-clara.png" width="38" height="38" alt="Cuenta Clara" style="display:block;border:0;border-radius:11px;">
+https://samuelRB17.github.io/cuenta-Clara/logo-cuenta-clara.png
 ```
 
-Solo cambia el `src` y el `width`/`height` según la aparición. La altura de línea y el `border-radius` ya están puestos.
+`logo-cuenta-clara.png` está en la raíz del repositorio y Pages la sirve con `Content-Type: image/png` (verificado, HTTP 200).
+
+Por qué PNG y no SVG: Gmail y Outlook de escritorio no renderizan imágenes SVG. Se usó `logo-cuenta-clara.png` (352×352, mismo logo) porque es el único formato que se muestra de forma consistente en todos los clientes.
+
+Por qué URL y no base64: Gmail bloquea los `data:` URIs en el atributo `src` de un `<img>`, así que el logo embebido en base64 no aparecía. La versión anterior del archivo usaba `data:image/svg+xml;base64`; ya no queda ninguna.
+
+```
+<img src="https://samuelRB17.github.io/cuenta-Clara/logo-cuenta-clara.png" width="38" height="38" alt="Cuenta Clara" style="display:block;border:0;border-radius:11px;">
+```
+
+Solo cambia el `width`/`height` según la aparición (38 en el header, 24 en el footer). La altura de línea y el `border-radius` ya están puestos.
+
+> Si mueves el logo a otra ruta o a otro dominio, actualiza esa URL en los dos `<img>` del bloque HTML.
 
 ## Código
 
@@ -177,7 +187,7 @@ Solo cambia el `src` y el `width`/`height` según la aparición. La altura de l�
                     <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td width="38" height="38" align="center" valign="middle" style="width:38px;height:38px;">
-                          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NCA0NCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkN1ZW50YSBDbGFyYSI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InRlYWxHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBGNkI2MyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwQTRBNDUiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9ImNlbnRlckdsb3ciIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9InJnYmEoMjU1LDI1NSwyNTUsMC4zNSkiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDApIi8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSIxNCIgZmlsbD0idXJsKCN0ZWFsR3JhZCkiLz4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSIxNCIgZmlsbD0idXJsKCNjZW50ZXJHbG93KSIvPgogIAogIDwhLS0gRG9udXQgc2VnbWVudHMgLS0+CiAgPHBhdGggZD0iTTIyIDIgQzExIDIgMiAxMSAyIDIyIEMyIDI3LjUgNC41IDMyLjUgOC41IDM2IEwyMiAyMiBaIiBmaWxsPSIjRkZGRkZGIiBvcGFjaXR5PSIwLjk1Ii8+CiAgPHBhdGggZD0iTTIyIDIyIEwyNS41IDEwLjUiIHN0cm9rZT0icmdiYSgxNSwxMDYsOTksMC4zKSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuNSIvPgogIDxwYXRoIGQ9Ik0yMiAyMiBMMjUuNSAxMC41IEwzOC41IDguNSIgZmlsbD0iI0Y1QjgzRCIvPgogIDxwYXRoIGQ9Ik0yMiAyMiBMMzguNSA4LjUiIHN0cm9rZT0icmdiYSgxNSwxMDYsOTksMC4zKSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuNSIvPgogIDxwYXRoIGQ9Ik0yMiAyMiBMMzguNSA4LjUgTDIyIDQyIiBmaWxsPSIjRkZGRkZGIiBvcGFjaXR5PSIwLjUiLz4KICA8cGF0aCBkPSJNMjIgMjIgTDIyIDQyIiBzdHJva2U9InJnYmEoMTUsMTA2LDk5LDAuMykiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjUiLz4KICAKICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIyIiByPSIzLjUiIGZpbGw9IiNGNUI4M0QiLz4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIyIiByPSI2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMTUsMTA2LDk5LDAuNikiIHN0cm9rZS13aWR0aD0iMS41Ii8+Cjwvc3ZnPg==" width="38" height="38" alt="Cuenta Clara" style="display:block;border:0;border-radius:11px;">
+                          <img src="https://samuelRB17.github.io/cuenta-Clara/logo-cuenta-clara.png" width="38" height="38" alt="Cuenta Clara" style="display:block;border:0;border-radius:11px;">
                         </td>
                         <td style="padding-left:10px;font:800 20px/1.2 Manrope,'Segoe UI',Helvetica,Arial,sans-serif;color:#0A0F12;letter-spacing:-0.4px;">
                           Cuenta Clara
@@ -386,7 +396,7 @@ Solo cambia el `src` y el `width`/`height` según la aparición. La altura de l�
                     <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td width="24" height="24" align="center" valign="middle" style="width:24px;height:24px;">
-                          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NCA0NCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkN1ZW50YSBDbGFyYSI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InRlYWxHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBGNkI2MyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwQTRBNDUiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9ImNlbnRlckdsb3ciIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9InJnYmEoMjU1LDI1NSwyNTUsMC4zNSkiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDApIi8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSIxNCIgZmlsbD0idXJsKCN0ZWFsR3JhZCkiLz4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSIxNCIgZmlsbD0idXJsKCNjZW50ZXJHbG93KSIvPgogIAogIDwhLS0gRG9udXQgc2VnbWVudHMgLS0+CiAgPHBhdGggZD0iTTIyIDIgQzExIDIgMiAxMSAyIDIyIEMyIDI3LjUgNC41IDMyLjUgOC41IDM2IEwyMiAyMiBaIiBmaWxsPSIjRkZGRkZGIiBvcGFjaXR5PSIwLjk1Ii8+CiAgPHBhdGggZD0iTTIyIDIyIEwyNS41IDEwLjUiIHN0cm9rZT0icmdiYSgxNSwxMDYsOTksMC4zKSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuNSIvPgogIDxwYXRoIGQ9Ik0yMiAyMiBMMjUuNSAxMC41IEwzOC41IDguNSIgZmlsbD0iI0Y1QjgzRCIvPgogIDxwYXRoIGQ9Ik0yMiAyMiBMMzguNSA4LjUiIHN0cm9rZT0icmdiYSgxNSwxMDYsOTksMC4zKSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuNSIvPgogIDxwYXRoIGQ9Ik0yMiAyMiBMMzguNSA4LjUgTDIyIDQyIiBmaWxsPSIjRkZGRkZGIiBvcGFjaXR5PSIwLjUiLz4KICA8cGF0aCBkPSJNMjIgMjIgTDIyIDQyIiBzdHJva2U9InJnYmEoMTUsMTA2LDk5LDAuMykiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjUiLz4KICAKICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIyIiByPSIzLjUiIGZpbGw9IiNGNUI4M0QiLz4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIyIiByPSI2IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMTUsMTA2LDk5LDAuNikiIHN0cm9rZS13aWR0aD0iMS41Ii8+Cjwvc3ZnPg==" width="24" height="24" alt="" aria-hidden="true" style="display:block;border:0;border-radius:7px;">
+                          <img src="https://samuelRB17.github.io/cuenta-Clara/logo-cuenta-clara.png" width="24" height="24" alt="" aria-hidden="true" style="display:block;border:0;border-radius:7px;">
                         </td>
                         <td style="padding-left:8px;font:800 15px/1.2 Manrope,'Segoe UI',Helvetica,Arial,sans-serif;color:#0A0F12;letter-spacing:-0.2px;">Cuenta Clara</td>
                       </tr>
